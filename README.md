@@ -1,4 +1,4 @@
-# CanTec - Cantina Pop Art
+# CanTec
 
 ## 📱 Sobre o Projeto
 
