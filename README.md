@@ -2,7 +2,7 @@
 
 ## 📱 Sobre o Projeto
 
-**Cantina Pop Art** é uma plataforma web para gerenciamento de pedidos em cantinas escolares. A aplicação permite que responsáveis criem contas, façam login e gerenciem informações de pedidos para seus filhos de forma simples e eficiente.
+**CanTec** é uma plataforma web para gerenciamento de pedidos em cantinas escolares. A aplicação permite que responsáveis criem contas, façam login e gerenciem informações de pedidos para seus filhos de forma simples e eficiente.
 
 ### Recursos Principais:
 
@@ -25,13 +25,13 @@ CanTec/
 ├── css/
 │   └── cadastro.css      # Estilos da aplicação
 └── img/
-    └── logo.png          # Logo da Cantina Pop Art
+    └── logo.png          # Logo da CanTec
 ```
 
 ## 🚀 Como Usar
 
 ### 1. **Página Inicial (index.html)**
-   - Apresentação da Cantina Pop Art
+   - Apresentação da CanTec
    - Descrição dos benefícios
    - Botão para criar conta ou fazer login
 
@@ -125,7 +125,7 @@ Nenhum! A aplicação funciona 100% no navegador sem necessidade de servidor ou 
 
 ## 👨‍💻 Autor
 
-Desenvolvido para a Cantina Pop Art - Consumo consciente, gestão eficiente!
+Desenvolvido para a CanTec - Consumo consciente, gestão eficiente!
 
 ---
 
