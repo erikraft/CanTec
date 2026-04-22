@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Cantina Pop Art</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: auto;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 4px solid var(--text-main);
+            z-index: 20;
+        }
+
+        header img {
+            height: 60px;
+            margin-bottom: 10px;
+        }
+
+        header h1 {
+            color: var(--vermelho);
+            margin: 0;
+            font-size: 28px;
+            text-transform: uppercase;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 30px 20px;
+            overflow-y: auto;
+        }
+
+        .dashboard-container {
+            position: relative;
+            background: var(--bg-card);
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+            max-width: 600px;
+            z-index: 10;
+            border: 6px solid var(--text-main);
+            width: 100%;
+        }
+
+        .dashboard-container h2 {
+            color: var(--vermelho);
+            font-weight: 900;
+            font-size: 20px;
+            text-transform: uppercase;
+            margin-top: 0;
+            text-align: center;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+            border-bottom: 3px solid var(--laranja);
+            padding-bottom: 20px;
+        }
+
+        .form-section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            color: var(--laranja);
+            font-weight: 700;
+            font-size: 16px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            margin-top: 0;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            color: var(--text-main);
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 12px;
+            border: 3px solid var(--text-main);
+            border-radius: 12px;
+            box-sizing: border-box;
+            font-size: 14px;
+            font-family: 'Unbounded', sans-serif;
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: center;
+        }
+
+        button {
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 14px;
+            border: 3px solid var(--text-main);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Unbounded', sans-serif;
+        }
+
+        .btn-save {
+            background: var(--vermelho);
+            color: white;
+        }
+
+        .btn-save:hover {
+            background: var(--laranja);
+            transform: scale(1.05);
+        }
+
+        .btn-clear {
+            background: var(--amarelo);
+            color: var(--text-main);
+        }
+
+        .btn-clear:hover {
+            background: var(--laranja);
+            transform: scale(1.05);
+        }
+
+        .btn-logout {
+            background: rgba(0, 0, 0, 0.1);
+            color: var(--text-main);
+        }
+
+        .btn-logout:hover {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .success-message {
+            background: #4caf50;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+            font-weight: 700;
+        }
+
+        .food-area {
+            position: fixed;
+        }
+
+        footer {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px;
+            text-align: center;
+            border-top: 4px solid var(--text-main);
+            font-size: 11px;
+            color: var(--text-main);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="food-area">
+        <div class="food-item burger"></div>
+        <div class="food-item pizza"></div>
+        <div class="food-item fries"></div>
+        <div class="food-item hotdog"></div>
+        <div class="food-item burger"></div>
+        <div class="food-item pizza"></div>
+    </div>
+
+    <header>
+        <img src="../img/logo.png" alt="Logo Cantina Pop Art">
+        <h1>Dashboard</h1>
+    </header>
+
+    <div class="main-content">
+        <div class="dashboard-container">
+            <h2>Gerenciador de Pedidos</h2>
+            <div id="successMessage" class="success-message">✓ Dados salvos com sucesso!</div>
+
+            <form id="dashboardForm">
+                <!-- Seção do Filho -->
+                <div class="form-section">
+                    <h3 class="section-title">📍 Informações do Filho</h3>
+                    
+                    <div class="input-group">
+                        <label for="nomeFil ho">Nome do Filho</label>
+                        <input type="text" id="nomeFilho" name="nomeFilho" placeholder="Nome completo do filho" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="emailFilho">Email do Filho</label>
+                        <input type="email" id="emailFilho" name="emailFilho" placeholder="email.filho@exemplo.com">
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label for="telefoneFilho">Telefone do Filho</label>
+                            <input type="tel" id="telefoneFilho" name="telefoneFilho" placeholder="(11) 99999-9999">
+                        </div>
+                        <div class="input-group">
+                            <label for="whatsappFilho">WhatsApp do Filho</label>
+                            <input type="tel" id="whatsappFilho" name="whatsappFilho" placeholder="(11) 99999-9999">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seção do Responsável -->
+                <div class="form-section">
+                    <h3 class="section-title">👨‍👩‍👧 Informações do Responsável</h3>
+                    
+                    <div class="input-group">
+                        <label for="nomeResponsavel">Nome do Responsável</label>
+                        <input type="text" id="nomeResponsavel" name="nomeResponsavel" placeholder="Nome completo do responsável" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="emailResponsavel">Email do Responsável</label>
+                        <input type="email" id="emailResponsavel" name="emailResponsavel" placeholder="email.responsavel@exemplo.com">
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label for="telefoneResponsavel">Telefone do Responsável</label>
+                            <input type="tel" id="telefoneResponsavel" name="telefoneResponsavel" placeholder="(11) 99999-9999">
+                        </div>
+                        <div class="input-group">
+                            <label for="whatsappResponsavel">WhatsApp do Responsável</label>
+                            <input type="tel" id="whatsappResponsavel" name="whatsappResponsavel" placeholder="(11) 99999-9999">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seção do Pedido -->
+                <div class="form-section">
+                    <h3 class="section-title">🍕 Informações do Pedido</h3>
+                    
+                    <div class="input-group">
+                        <label for="produto">Produto Escolhido</label>
+                        <input type="text" id="produto" name="produto" placeholder="Ex: Pizza, Hambúrguer, etc..." required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="preco">Preço (R$)</label>
+                        <input type="number" id="preco" name="preco" placeholder="0.00" step="0.01" min="0" required>
+                    </div>
+                </div>
+
+                <!-- Botões -->
+                <div class="btn-container">
+                    <button type="submit" class="btn-save">💾 Salvar Dados</button>
+                    <button type="reset" class="btn-clear">🗑️ Limpar</button>
+                    <button type="button" class="btn-logout" onclick="logout()">🚪 Sair</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Cantina Pop Art. Todos os dados são salvos localmente no seu navegador.</p>
+    </footer>
+
+    <script>
+        // Salvar dados no localStorage
+        document.getElementById('dashboardForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = {
+                nomeFilho: document.getElementById('nomeFilho').value,
+                emailFilho: document.getElementById('emailFilho').value,
+                telefoneFilho: document.getElementById('telefoneFilho').value,
+                whatsappFilho: document.getElementById('whatsappFilho').value,
+                nomeResponsavel: document.getElementById('nomeResponsavel').value,
+                emailResponsavel: document.getElementById('emailResponsavel').value,
+                telefoneResponsavel: document.getElementById('telefoneResponsavel').value,
+                whatsappResponsavel: document.getElementById('whatsappResponsavel').value,
+                produto: document.getElementById('produto').value,
+                preco: document.getElementById('preco').value
+            };
+
+            // Salvar no localStorage
+            localStorage.setItem('cantinaPedido', JSON.stringify(formData));
+
+            // Mostrar mensagem de sucesso
+            const successMsg = document.getElementById('successMessage');
+            successMsg.style.display = 'block';
+            setTimeout(() => {
+                successMsg.style.display = 'none';
+            }, 3000);
+        });
+
+        // Carregar dados ao abrir a página
+        window.addEventListener('load', function() {
+            const savedData = localStorage.getItem('cantinaPedido');
+            if (savedData) {
+                const formData = JSON.parse(savedData);
+                document.getElementById('nomeFilho').value = formData.nomeFilho || '';
+                document.getElementById('emailFilho').value = formData.emailFilho || '';
+                document.getElementById('telefoneFilho').value = formData.telefoneFilho || '';
+                document.getElementById('whatsappFilho').value = formData.whatsappFilho || '';
+                document.getElementById('nomeResponsavel').value = formData.nomeResponsavel || '';
+                document.getElementById('emailResponsavel').value = formData.emailResponsavel || '';
+                document.getElementById('telefoneResponsavel').value = formData.telefoneResponsavel || '';
+                document.getElementById('whatsappResponsavel').value = formData.whatsappResponsavel || '';
+                document.getElementById('produto').value = formData.produto || '';
+                document.getElementById('preco').value = formData.preco || '';
+            }
+        });
+
+        // Função para sair (logout)
+        function logout() {
+            if (confirm('Tem certeza que deseja sair?')) {
+                localStorage.removeItem('userSession');
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+
+</body>
+</html>

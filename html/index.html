@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cantina Pop Art - Home</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: auto;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 4px solid var(--text-main);
+            z-index: 20;
+        }
+
+        header img {
+            height: 60px;
+            margin-bottom: 10px;
+        }
+
+        header h1 {
+            color: var(--vermelho);
+            margin: 0;
+            font-size: 32px;
+            text-transform: uppercase;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .content-container {
+            position: relative;
+            background: var(--bg-card);
+            padding: 50px;
+            border-radius: 30px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+            max-width: 500px;
+            text-align: center;
+            z-index: 10;
+            border: 6px solid var(--text-main);
+        }
+
+        .content-container h2 {
+            color: var(--vermelho);
+            font-weight: 900;
+            font-size: 24px;
+            text-transform: uppercase;
+            margin-top: 0;
+        }
+
+        .content-container p {
+            color: var(--text-main);
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 15px 0;
+        }
+
+        .btn-container {
+            margin-top: 30px;
+        }
+
+        .btn-container a {
+            display: inline-block;
+            background: var(--vermelho);
+            color: white;
+            padding: 15px 40px;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 16px;
+            border: 3px solid var(--text-main);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-container a:hover {
+            background: var(--laranja);
+            transform: scale(1.05);
+        }
+
+        footer {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            text-align: center;
+            border-top: 4px solid var(--text-main);
+            font-size: 12px;
+            color: var(--text-main);
+        }
+
+        .food-area {
+            position: fixed;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="food-area">
+        <div class="food-item burger"></div>
+        <div class="food-item pizza"></div>
+        <div class="food-item fries"></div>
+        <div class="food-item hotdog"></div>
+        <div class="food-item burger"></div>
+        <div class="food-item pizza"></div>
+    </div>
+
+    <header>
+        <img src="../img/logo.png" alt="Logo Cantina Pop Art">
+        <h1>Cantina Pop Art</h1>
+    </header>
+
+    <div class="main-content">
+        <div class="content-container">
+            <h2>Bem-vindo à Cantina Pop Art!</h2>
+            <p><strong>Consumo consciente, gestão eficiente</strong></p>
+            
+            <p>Na Cantina Pop Art, você pode criar sua conta para gerenciar pedidos de forma simples e prática. 
+            Com nossa plataforma, você registra informações do responsável e do filho, permite a comunicação via WhatsApp, 
+            e acompanha todos os pedidos realizados em um só lugar.</p>
+
+            <p>✨ Facilite a alimentação escolar com tecnologia! ✨</p>
+
+            <div class="btn-container">
+                <a href="account.html">Entrar ou Criar Conta</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Cantina Pop Art. Desenvolvido com tecnologia e eficiência.</p>
+    </footer>
+
+</body>
+</html>
