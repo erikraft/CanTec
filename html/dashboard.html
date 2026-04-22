@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8"/>
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; img-src 'self' data:; font-src 'self' https://cdnjs.cloudflare.com; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'; upgrade-insecure-requests">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <title>Dashboard - CanTec</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -86,7 +89,7 @@ header h1{font-size:1.5rem;font-weight:700;margin:0;background:linear-gradient(1
 <div class="cursor-glow" id="glow"></div>
 
 <header>
-  <img src="../img/logo.png" alt="Logo CanTec" class="header-logo">
+  <img src="/img/logo.png" alt="Logo CanTec" class="header-logo">
   <h1>CanTec - Dashboard</h1>
 </header>
 
@@ -260,7 +263,8 @@ document.addEventListener('mousemove', e => {
 });
 document.addEventListener('mouseleave', () => { glow.style.opacity = '0'; });
 
-const FORM_STORAGE_KEY = 'cantinaPedido';
+const FORM_STORAGE_KEY = 'cantinaPedidoRascunho';
+const FORM_LIST_STORAGE_KEY = 'cantinaPedidos';
 const dashboardForm = document.getElementById('dashboardForm');
 
 function sanitizeInput(value) {
@@ -298,12 +302,27 @@ function showSaveStatus(message, success = true) {
 function saveToBrowserCache() {
   try {
     const formData = getFormData();
+    const pedidos = JSON.parse(localStorage.getItem(FORM_LIST_STORAGE_KEY) || '[]');
+    pedidos.push({
+      ...formData,
+      id: `pedido-${Date.now()}`,
+      criadoEm: new Date().toISOString()
+    });
+
+    localStorage.setItem(FORM_LIST_STORAGE_KEY, JSON.stringify(pedidos));
     localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(formData));
-    showSaveStatus('Dados salvos no cache do navegador com sucesso!');
+    showSaveStatus(`Comprovante salvo no cache! Total: ${pedidos.length}`);
   } catch (error) {
     console.error('Falha ao salvar no cache do navegador:', error);
     showSaveStatus('Não foi possível salvar. Verifique as permissões do navegador.', false);
   }
+}
+
+function clearOrderFieldsForNextReceipt() {
+  document.getElementById('produto').value = '';
+  document.getElementById('preco').value = '';
+  document.getElementById('quantidade').value = '1';
+  document.getElementById('produto').focus();
 }
 
 dashboardForm.addEventListener('submit', function(e) {
@@ -313,6 +332,7 @@ dashboardForm.addEventListener('submit', function(e) {
     return;
   }
   saveToBrowserCache();
+  clearOrderFieldsForNextReceipt();
 });
 
 // Carregar dados ao abrir
@@ -338,7 +358,7 @@ window.addEventListener('load', function() {
 dashboardForm.addEventListener('reset', function() {
   setTimeout(() => {
     localStorage.removeItem(FORM_STORAGE_KEY);
-    showSaveStatus('Campos limpos e cache removido.');
+    showSaveStatus('Campos limpos. Comprovantes já salvos continuam no cache.');
   }, 0);
 });
 
