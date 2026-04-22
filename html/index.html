@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8"/>
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; img-src 'self' data:; font-src 'self' https://cdnjs.cloudflare.com; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'; upgrade-insecure-requests">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <title>CanTec - Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -34,6 +37,7 @@ canvas#bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0}
 @keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.7)}}
 
 h1{font-size:clamp(2.8rem,6vw,5.5rem);font-weight:700;line-height:1.08;letter-spacing:-0.03em;color:#f8fafc;opacity:0;animation:fadeUp 0.8s 0.55s ease forwards}
+h2{font-size:clamp(2.4rem,5.6vw,4.6rem);font-weight:700;line-height:1.08;letter-spacing:-0.03em;color:#f8fafc;opacity:0;animation:fadeUp 0.8s 0.55s ease forwards;margin:0}
 h1 .line{display:block;overflow:hidden}
 h1 .line span{display:inline-block;animation:slideIn 0.9s ease forwards;opacity:0}
 h1 .line:nth-child(1) span{animation-delay:0.6s}
@@ -76,6 +80,8 @@ p.sub{font-size:clamp(1rem,2vw,1.25rem);color:rgba(248,250,252,0.5);margin-top:1
 .header-subtitle{font-size:0.85rem;color:rgba(248,250,252,0.6);margin:0.3rem 0 0 0;letter-spacing:0.05em;text-transform:uppercase}
 
 .center{position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;max-width:1000px;margin:0 auto}
+.main-content{position:absolute;inset:0;z-index:10;display:flex;align-items:center;justify-content:center;padding:2rem}
+.content-container{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;max-width:1000px;width:100%}
 
 .features-info{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;max-width:900px;margin:3rem auto;opacity:0;animation:fadeUp 0.8s 1.5s ease forwards}
 .feature-card{background:rgba(255,255,255,0.05);backdrop-filter:blur(10px);border:1px solid rgba(255,102,0,0.2);border-radius:12px;padding:2rem;text-align:center;transition:all 0.3s ease;cursor:pointer}
@@ -107,7 +113,7 @@ p.sub{font-size:clamp(1rem,2vw,1.25rem);color:rgba(248,250,252,0.5);margin-top:1
 
 <header class="main-header">
   <div class="header-content">
-    <img src="../img/logo.png" alt="Logo CanTec" class="header-logo">
+    <img src="/img/logo.png" alt="Logo CanTec" class="header-logo">
     <div>
       <h2 class="header-title">CanTec</h2>
       <p class="header-subtitle">Plataforma de Gerenciamento de Pedidos</p>
@@ -115,13 +121,11 @@ p.sub{font-size:clamp(1rem,2vw,1.25rem);color:rgba(248,250,252,0.5);margin-top:1
   </div>
 </header>
 
-<div class="center">
+<div class="main-content">
+  <div class="content-container">
   <div class="badge"><span class="badge-dot"></span><i class="fas fa-star"></i> Sistema Inteligente</div>
 
-  <h1>
-    <div class="line"><span>Bem-vindo à</span></div>
-    <div class="line"><span class="gradient-text">CanTec</span></div>
-  </h1>
+  <h2>Bem-vindo à CanTec<br>!</h2>
 
   <p class="sub">Plataforma especializada em registro e gerenciamento de contas de pedidos. Organize, acompanhe e controle todos os seus pedidos em um único lugar com segurança e eficiência.</p>
 
@@ -146,6 +150,7 @@ p.sub{font-size:clamp(1rem,2vw,1.25rem);color:rgba(248,250,252,0.5);margin-top:1
   <div class="ctas">
     <a href="account.html" class="btn-p">Entrar ou Criar Conta</a>
   </div>
+</div>
 </div>
 
 <footer class="main-footer">
