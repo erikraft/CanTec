@@ -1,4 +1,4 @@
-# CanTec
+﻿# CanTec
 
 ## 📱 Sobre o Projeto
 
@@ -6,26 +6,26 @@
 
 ### Recursos Principais:
 
-✨ **Interface Vibrante** - Design colorido e moderno com animações de lanches flutuantes
-🔐 **Autenticação** - Sistema de registro e login
-👨‍👩‍👧 **Gestão de Contatos** - Cadastro de informações do responsável e filho
-📋 **Gerenciador de Pedidos** - Registro de produtos e preços
-💾 **Armazenamento Local** - Todos os dados salvos no navegador (localStorage)
-📱 **Responsivo** - Funciona em diferentes tamanhos de tela
+   - ✨ **Interface Vibrante** - Design colorido e moderno com animações de lanches flutuantes
+   - 🔐 **Autenticação** - Sistema de registro e login
+   - 👨‍👩‍👧 **Gestão de Contatos** - Cadastro de informações do responsável e filho
+   - 📋 **Gerenciador de Pedidos** - Registro de produtos e preços
+   - 💾 **Armazenamento Local** - Todos os dados salvos no navegador (localStorage)
+   - 📱 **Responsivo** - Funciona em diferentes tamanhos de tela
 
 ## 📂 Estrutura do Projeto
 
 ```
 CanTec/
-├── README.md              # Este arquivo
-├── html/
-│   ├── index.html        # Página inicial com apresentação da cantina
-│   ├── account.html      # Página de registro e login
-│   └── dashboard.html    # Painel de gerenciamento de pedidos
-├── css/
-│   └── cadastro.css      # Estilos da aplicação
-└── img/
-    └── logo.png          # Logo da CanTec
+|-- README.md                 # Este arquivo
+`-- website/
+    |-- index.html            # Pagina inicial com apresentacao da cantina
+    |-- account.html          # Pagina de registro e login
+    |-- dashboard.html        # Painel de gerenciamento de pedidos
+    |-- css/
+    |   `-- style.css         # Estilos da aplicacao
+    `-- img/
+        `-- logo.png          # Logo da CanTec
 ```
 
 ## 🚀 Como Usar
