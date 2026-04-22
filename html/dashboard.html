@@ -1,349 +1,312 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Cantina Pop Art</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>Dashboard - CanTec</title>
     <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow: auto;
-        }
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#04040a;font-family:'Segoe UI',system-ui,sans-serif;color:#f8fafc}
+canvas#bg{position:absolute;inset:0;z-index:0}
 
-        header {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 20px;
-            text-align: center;
-            border-bottom: 4px solid var(--text-main);
-            z-index: 20;
-        }
+.aurora{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.aurora span{position:absolute;border-radius:50%;opacity:0.18;filter:blur(80px);animation:drift 14s ease-in-out infinite alternate}
+.aurora span:nth-child(1){width:600px;height:400px;background:#ff3333;top:-100px;left:-100px;animation-duration:13s}
+.aurora span:nth-child(2){width:500px;height:500px;background:#ff6600;top:30%;right:-150px;animation-duration:17s;animation-delay:-4s}
+.aurora span:nth-child(3){width:400px;height:350px;background:#ffcc00;bottom:-80px;left:30%;animation-duration:11s;animation-delay:-7s}
+.aurora span:nth-child(4){width:350px;height:400px;background:#ff3333;bottom:10%;left:-80px;animation-duration:15s;animation-delay:-2s;opacity:0.1}
+@keyframes drift{0%{transform:translate(0,0) scale(1)}100%{transform:translate(60px,40px) scale(1.2)}}
 
-        header img {
-            height: 60px;
-            margin-bottom: 10px;
-        }
+.grid{position:absolute;inset:0;z-index:2;pointer-events:none;
+  background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 100%)}
 
-        header h1 {
-            color: var(--vermelho);
-            margin: 0;
-            font-size: 28px;
-            text-transform: uppercase;
-        }
+header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(15,15,26,0.7);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,0.1);padding:1rem 2rem}
+header h1{font-size:1.5rem;font-weight:700;margin:0;background:linear-gradient(135deg,#ff3333,#ff6600);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 
-        .main-content {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 30px 20px;
-            overflow-y: auto;
-        }
+.dashboard{position:absolute;inset:0;top:70px;z-index:10;display:flex;flex-direction:column;align-items:center;padding:2rem;overflow-y:auto}
 
-        .dashboard-container {
-            position: relative;
-            background: var(--bg-card);
-            padding: 40px;
-            border-radius: 30px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
-            max-width: 600px;
-            z-index: 10;
-            border: 6px solid var(--text-main);
-            width: 100%;
-        }
+.form-wrapper{background:rgba(15,15,26,0.6);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:15px;padding:2rem;max-width:550px;width:100%;opacity:0;animation:fadeUp 0.8s 0.2s ease forwards;position:relative;z-index:15}
 
-        .dashboard-container h2 {
-            color: var(--vermelho);
-            font-weight: 900;
-            font-size: 20px;
-            text-transform: uppercase;
-            margin-top: 0;
-            text-align: center;
-        }
+.form-header{text-align:center;margin-bottom:1.5rem}
+.form-header h2{font-size:1.5rem;color:#f8fafc;margin-bottom:0.5rem}
 
-        .form-section {
-            margin-bottom: 30px;
-            border-bottom: 3px solid var(--laranja);
-            padding-bottom: 20px;
-        }
+.section{margin-bottom:1.5rem;border-bottom:1px solid rgba(255,102,0,0.3);padding-bottom:1.5rem}
+.section:last-child{border-bottom:none;margin-bottom:0}
+.section-title{font-size:0.85rem;font-weight:700;text-transform:uppercase;color:#ff6600;margin-bottom:1rem;letter-spacing:0.05em}
 
-        .form-section:last-child {
-            border-bottom: none;
-        }
+.input-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.input-group{margin-bottom:1rem}
+.input-group label{display:block;font-size:0.8rem;font-weight:600;text-transform:uppercase;color:rgba(248,250,252,0.8);margin-bottom:0.4rem;letter-spacing:0.05em}
+.input-group input,.input-group select{width:100%;padding:0.8rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#f8fafc;font-size:0.9rem;transition:all 0.3s ease}
+.input-group input:focus,.input-group select:focus{outline:none;background:rgba(255,255,255,0.08);border-color:rgba(255,102,0,0.5);box-shadow:0 0 20px rgba(255,102,0,0.2)}
+.input-group input::placeholder{color:rgba(248,250,252,0.3)}
 
-        .section-title {
-            color: var(--laranja);
-            font-weight: 700;
-            font-size: 16px;
-            text-transform: uppercase;
-            margin-bottom: 15px;
-            margin-top: 0;
-        }
+.btn-group{display:flex;gap:1rem;margin-top:1.5rem;flex-wrap:wrap}
+.btn{flex:1;min-width:120px;padding:0.85rem;border:none;border-radius:8px;font-weight:600;cursor:pointer;transition:all 0.3s ease;text-transform:uppercase;font-size:0.8rem;letter-spacing:0.05em}
+.btn-save{background:linear-gradient(135deg,#ff3333,#ff6600);color:#fff}
+.btn-save:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(255,51,51,0.3)}
+.btn-clear{background:rgba(255,204,0,0.2);border:1px solid rgba(255,204,0,0.5);color:#ffcc00}
+.btn-clear:hover{background:rgba(255,204,0,0.3)}
+.btn-logout{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#f8fafc}
+.btn-logout:hover{background:rgba(255,255,255,0.15)}
 
-        .input-group {
-            margin-bottom: 15px;
-            text-align: left;
-        }
+.success-msg{background:rgba(76,175,80,0.15);border:1px solid rgba(76,175,80,0.4);color:#4caf50;padding:1rem;border-radius:8px;margin-bottom:1rem;text-align:center;display:none;font-weight:600;font-size:0.9rem}
 
-        .input-group label {
-            display: block;
-            font-size: 12px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            color: var(--text-main);
-        }
+.orb{position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,0.08);pointer-events:none;z-index:3}
+.orb-1{width:360px;height:360px;top:50%;left:50%;transform:translate(-50%,-50%);border-color:rgba(255,51,51,0.15);animation:orb-spin 28s linear infinite}
+.orb-2{width:520px;height:520px;top:50%;left:50%;transform:translate(-50%,-50%);border-color:rgba(255,102,0,0.1);animation:orb-spin 44s linear infinite reverse}
+.orb-3{width:700px;height:700px;top:50%;left:50%;transform:translate(-50%,-50%);border-color:rgba(255,204,0,0.07);animation:orb-spin 60s linear infinite}
+@keyframes orb-spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
 
-        .input-group input,
-        .input-group select {
-            width: 100%;
-            padding: 12px;
-            border: 3px solid var(--text-main);
-            border-radius: 12px;
-            box-sizing: border-box;
-            font-size: 14px;
-            font-family: 'Unbounded', sans-serif;
-        }
+.cursor-glow{position:absolute;width:300px;height:300px;border-radius:50%;pointer-events:none;z-index:4;opacity:0.12;background:radial-gradient(circle,#ff3333,transparent 70%);transform:translate(-50%,-50%);transition:opacity 0.3s}
 
-        .input-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
 
-        .btn-container {
-            display: flex;
-            gap: 15px;
-            margin-top: 30px;
-            justify-content: center;
-        }
-
-        button {
-            padding: 15px 30px;
-            border-radius: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            font-size: 14px;
-            border: 3px solid var(--text-main);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Unbounded', sans-serif;
-        }
-
-        .btn-save {
-            background: var(--vermelho);
-            color: white;
-        }
-
-        .btn-save:hover {
-            background: var(--laranja);
-            transform: scale(1.05);
-        }
-
-        .btn-clear {
-            background: var(--amarelo);
-            color: var(--text-main);
-        }
-
-        .btn-clear:hover {
-            background: var(--laranja);
-            transform: scale(1.05);
-        }
-
-        .btn-logout {
-            background: rgba(0, 0, 0, 0.1);
-            color: var(--text-main);
-        }
-
-        .btn-logout:hover {
-            background: rgba(0, 0, 0, 0.2);
-        }
-
-        .success-message {
-            background: #4caf50;
-            color: white;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            text-align: center;
-            display: none;
-            font-weight: 700;
-        }
-
-        .food-area {
-            position: fixed;
-        }
-
-        footer {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 15px;
-            text-align: center;
-            border-top: 4px solid var(--text-main);
-            font-size: 11px;
-            color: var(--text-main);
-        }
+@media(max-width:640px){.form-wrapper{padding:1.5rem}.input-row{grid-template-columns:1fr}.btn-group{flex-direction:column}.btn{width:100%}}
     </style>
 </head>
 <body>
+<canvas id="bg"></canvas>
 
-    <div class="food-area">
-        <div class="food-item burger"></div>
-        <div class="food-item pizza"></div>
-        <div class="food-item fries"></div>
-        <div class="food-item hotdog"></div>
-        <div class="food-item burger"></div>
-        <div class="food-item pizza"></div>
+<div class="aurora">
+  <span></span><span></span><span></span><span></span>
+</div>
+<div class="grid"></div>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<div class="cursor-glow" id="glow"></div>
+
+<header>
+  <h1>CanTec - Dashboard</h1>
+</header>
+
+<div class="dashboard">
+  <div class="form-wrapper">
+    <div class="form-header">
+      <h2>Gerenciador de Pedidos</h2>
     </div>
 
-    <header>
-        <img src="../img/logo.png" alt="Logo Cantina Pop Art">
-        <h1>Dashboard</h1>
-    </header>
+    <div id="successMessage" class="success-msg">✓ Dados salvos com sucesso!</div>
 
-    <div class="main-content">
-        <div class="dashboard-container">
-            <h2>Gerenciador de Pedidos</h2>
-            <div id="successMessage" class="success-message">✓ Dados salvos com sucesso!</div>
-
-            <form id="dashboardForm">
-                <!-- Seção do Filho -->
-                <div class="form-section">
-                    <h3 class="section-title">📍 Informações do Filho</h3>
-                    
-                    <div class="input-group">
-                        <label for="nomeFil ho">Nome do Filho</label>
-                        <input type="text" id="nomeFilho" name="nomeFilho" placeholder="Nome completo do filho" required>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="emailFilho">Email do Filho</label>
-                        <input type="email" id="emailFilho" name="emailFilho" placeholder="email.filho@exemplo.com">
-                    </div>
-
-                    <div class="input-row">
-                        <div class="input-group">
-                            <label for="telefoneFilho">Telefone do Filho</label>
-                            <input type="tel" id="telefoneFilho" name="telefoneFilho" placeholder="(11) 99999-9999">
-                        </div>
-                        <div class="input-group">
-                            <label for="whatsappFilho">WhatsApp do Filho</label>
-                            <input type="tel" id="whatsappFilho" name="whatsappFilho" placeholder="(11) 99999-9999">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Seção do Responsável -->
-                <div class="form-section">
-                    <h3 class="section-title">👨‍👩‍👧 Informações do Responsável</h3>
-                    
-                    <div class="input-group">
-                        <label for="nomeResponsavel">Nome do Responsável</label>
-                        <input type="text" id="nomeResponsavel" name="nomeResponsavel" placeholder="Nome completo do responsável" required>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="emailResponsavel">Email do Responsável</label>
-                        <input type="email" id="emailResponsavel" name="emailResponsavel" placeholder="email.responsavel@exemplo.com">
-                    </div>
-
-                    <div class="input-row">
-                        <div class="input-group">
-                            <label for="telefoneResponsavel">Telefone do Responsável</label>
-                            <input type="tel" id="telefoneResponsavel" name="telefoneResponsavel" placeholder="(11) 99999-9999">
-                        </div>
-                        <div class="input-group">
-                            <label for="whatsappResponsavel">WhatsApp do Responsável</label>
-                            <input type="tel" id="whatsappResponsavel" name="whatsappResponsavel" placeholder="(11) 99999-9999">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Seção do Pedido -->
-                <div class="form-section">
-                    <h3 class="section-title">🍕 Informações do Pedido</h3>
-                    
-                    <div class="input-group">
-                        <label for="produto">Produto Escolhido</label>
-                        <input type="text" id="produto" name="produto" placeholder="Ex: Pizza, Hambúrguer, etc..." required>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="preco">Preço (R$)</label>
-                        <input type="number" id="preco" name="preco" placeholder="0.00" step="0.01" min="0" required>
-                    </div>
-                </div>
-
-                <!-- Botões -->
-                <div class="btn-container">
-                    <button type="submit" class="btn-save">💾 Salvar Dados</button>
-                    <button type="reset" class="btn-clear">🗑️ Limpar</button>
-                    <button type="button" class="btn-logout" onclick="logout()">🚪 Sair</button>
-                </div>
-            </form>
+    <form id="dashboardForm">
+      <!-- Informações do Filho -->
+      <div class="section">
+        <h3 class="section-title">👤 Informações do Filho</h3>
+        
+        <div class="input-group">
+          <label for="nomeFilho">Nome do Filho</label>
+          <input type="text" id="nomeFilho" placeholder="Nome completo" required>
         </div>
-    </div>
+        
+        <div class="input-row">
+          <div class="input-group">
+            <label for="emailFilho">Email</label>
+            <input type="email" id="emailFilho" placeholder="email@exemplo.com">
+          </div>
+          <div class="input-group">
+            <label for="telefoneFilho">Telefone</label>
+            <input type="tel" id="telefoneFilho" placeholder="(11) 99999-9999">
+          </div>
+        </div>
 
-    <footer>
-        <p>&copy; 2026 Cantina Pop Art. Todos os dados são salvos localmente no seu navegador.</p>
-    </footer>
+        <div class="input-group">
+          <label for="whatsappFilho">WhatsApp</label>
+          <input type="tel" id="whatsappFilho" placeholder="(11) 99999-9999">
+        </div>
+      </div>
 
-    <script>
-        // Salvar dados no localStorage
-        document.getElementById('dashboardForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+      <!-- Informações do Responsável -->
+      <div class="section">
+        <h3 class="section-title">👨‍👩‍👧 Responsável</h3>
+        
+        <div class="input-group">
+          <label for="nomeResponsavel">Nome do Responsável</label>
+          <input type="text" id="nomeResponsavel" placeholder="Nome completo" required>
+        </div>
+        
+        <div class="input-row">
+          <div class="input-group">
+            <label for="emailResponsavel">Email</label>
+            <input type="email" id="emailResponsavel" placeholder="email@exemplo.com">
+          </div>
+          <div class="input-group">
+            <label for="telefoneResponsavel">Telefone</label>
+            <input type="tel" id="telefoneResponsavel" placeholder="(11) 99999-9999">
+          </div>
+        </div>
 
-            const formData = {
-                nomeFilho: document.getElementById('nomeFilho').value,
-                emailFilho: document.getElementById('emailFilho').value,
-                telefoneFilho: document.getElementById('telefoneFilho').value,
-                whatsappFilho: document.getElementById('whatsappFilho').value,
-                nomeResponsavel: document.getElementById('nomeResponsavel').value,
-                emailResponsavel: document.getElementById('emailResponsavel').value,
-                telefoneResponsavel: document.getElementById('telefoneResponsavel').value,
-                whatsappResponsavel: document.getElementById('whatsappResponsavel').value,
-                produto: document.getElementById('produto').value,
-                preco: document.getElementById('preco').value
-            };
+        <div class="input-group">
+          <label for="whatsappResponsavel">WhatsApp</label>
+          <input type="tel" id="whatsappResponsavel" placeholder="(11) 99999-9999">
+        </div>
+      </div>
 
-            // Salvar no localStorage
-            localStorage.setItem('cantinaPedido', JSON.stringify(formData));
+      <!-- Informações do Pedido -->
+      <div class="section">
+        <h3 class="section-title">🍕 Pedido</h3>
+        
+        <div class="input-group">
+          <label for="produto">Produto</label>
+          <input type="text" id="produto" placeholder="Ex: Pizza, Hambúrguer..." required>
+        </div>
 
-            // Mostrar mensagem de sucesso
-            const successMsg = document.getElementById('successMessage');
-            successMsg.style.display = 'block';
-            setTimeout(() => {
-                successMsg.style.display = 'none';
-            }, 3000);
-        });
+        <div class="input-row">
+          <div class="input-group">
+            <label for="preco">Preço (R$)</label>
+            <input type="number" id="preco" placeholder="0.00" step="0.01" min="0" required>
+          </div>
+          <div class="input-group">
+            <label for="quantidade">Quantidade</label>
+            <input type="number" id="quantidade" placeholder="1" min="1" value="1" required>
+          </div>
+        </div>
+      </div>
 
-        // Carregar dados ao abrir a página
-        window.addEventListener('load', function() {
-            const savedData = localStorage.getItem('cantinaPedido');
-            if (savedData) {
-                const formData = JSON.parse(savedData);
-                document.getElementById('nomeFilho').value = formData.nomeFilho || '';
-                document.getElementById('emailFilho').value = formData.emailFilho || '';
-                document.getElementById('telefoneFilho').value = formData.telefoneFilho || '';
-                document.getElementById('whatsappFilho').value = formData.whatsappFilho || '';
-                document.getElementById('nomeResponsavel').value = formData.nomeResponsavel || '';
-                document.getElementById('emailResponsavel').value = formData.emailResponsavel || '';
-                document.getElementById('telefoneResponsavel').value = formData.telefoneResponsavel || '';
-                document.getElementById('whatsappResponsavel').value = formData.whatsappResponsavel || '';
-                document.getElementById('produto').value = formData.produto || '';
-                document.getElementById('preco').value = formData.preco || '';
-            }
-        });
+      <!-- Botões -->
+      <div class="btn-group">
+        <button type="submit" class="btn btn-save">💾 Salvar</button>
+        <button type="reset" class="btn btn-clear">🗑️ Limpar</button>
+        <button type="button" class="btn btn-logout" onclick="logout()">🚪 Sair</button>
+      </div>
+    </form>
+  </div>
+</div>
 
-        // Função para sair (logout)
-        function logout() {
-            if (confirm('Tem certeza que deseja sair?')) {
-                localStorage.removeItem('userSession');
-                window.location.href = 'index.html';
-            }
-        }
-    </script>
+<script>
+const canvas = document.getElementById('bg');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [], mouse = {x: -9999, y: -9999};
 
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+const N = 90;
+function mkP() {
+  return {
+    x: Math.random() * W, y: Math.random() * H,
+    vx: (Math.random() - 0.5) * 0.35,
+    vy: (Math.random() - 0.5) * 0.35,
+    r: Math.random() * 1.5 + 0.4,
+    a: Math.random()
+  };
+}
+for (let i = 0; i < N; i++) particles.push(mkP());
+
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+  const LINK = 130;
+  for (let i = 0; i < N; i++) {
+    const p = particles[i];
+    p.x += p.vx; p.y += p.vy;
+    if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+    if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+    const dx = p.x - mouse.x, dy = p.y - mouse.y;
+    const md = Math.sqrt(dx*dx+dy*dy);
+    if (md < 120) { p.x += dx/md*0.6; p.y += dy/md*0.6; }
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(255,102,0,${0.35 + p.a*0.3})`;
+    ctx.fill();
+  }
+  for (let i = 0; i < N; i++) {
+    for (let j = i+1; j < N; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const d = Math.sqrt(dx*dx+dy*dy);
+      if (d < LINK) {
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `rgba(255,102,0,${0.12*(1-d/LINK)})`;
+        ctx.lineWidth = 0.6;
+        ctx.stroke();
+      }
+    }
+    const dx = particles[i].x - mouse.x, dy = particles[i].y - mouse.y;
+    const d = Math.sqrt(dx*dx+dy*dy);
+    if (d < 160) {
+      ctx.beginPath();
+      ctx.moveTo(particles[i].x, particles[i].y);
+      ctx.lineTo(mouse.x, mouse.y);
+      ctx.strokeStyle = `rgba(255,204,0,${0.18*(1-d/160)})`;
+      ctx.lineWidth = 0.7;
+      ctx.stroke();
+    }
+  }
+  requestAnimationFrame(draw);
+}
+draw();
+
+const glow = document.getElementById('glow');
+document.addEventListener('mousemove', e => {
+  mouse.x = e.clientX; mouse.y = e.clientY;
+  glow.style.left = e.clientX + 'px';
+  glow.style.top = e.clientY + 'px';
+  glow.style.opacity = '0.13';
+});
+document.addEventListener('mouseleave', () => { glow.style.opacity = '0'; });
+
+// Salvar dados no localStorage
+document.getElementById('dashboardForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  
+  const formData = {
+    nomeFilho: document.getElementById('nomeFilho').value,
+    emailFilho: document.getElementById('emailFilho').value,
+    telefoneFilho: document.getElementById('telefoneFilho').value,
+    whatsappFilho: document.getElementById('whatsappFilho').value,
+    nomeResponsavel: document.getElementById('nomeResponsavel').value,
+    emailResponsavel: document.getElementById('emailResponsavel').value,
+    telefoneResponsavel: document.getElementById('telefoneResponsavel').value,
+    whatsappResponsavel: document.getElementById('whatsappResponsavel').value,
+    produto: document.getElementById('produto').value,
+    preco: document.getElementById('preco').value,
+    quantidade: document.getElementById('quantidade').value
+  };
+
+  localStorage.setItem('cantinaPedido', JSON.stringify(formData));
+  
+  const successMsg = document.getElementById('successMessage');
+  successMsg.style.display = 'block';
+  setTimeout(() => {
+    successMsg.style.display = 'none';
+  }, 2500);
+});
+
+// Carregar dados ao abrir
+window.addEventListener('load', function() {
+  const savedData = localStorage.getItem('cantinaPedido');
+  if (savedData) {
+    const formData = JSON.parse(savedData);
+    document.getElementById('nomeFilho').value = formData.nomeFilho || '';
+    document.getElementById('emailFilho').value = formData.emailFilho || '';
+    document.getElementById('telefoneFilho').value = formData.telefoneFilho || '';
+    document.getElementById('whatsappFilho').value = formData.whatsappFilho || '';
+    document.getElementById('nomeResponsavel').value = formData.nomeResponsavel || '';
+    document.getElementById('emailResponsavel').value = formData.emailResponsavel || '';
+    document.getElementById('telefoneResponsavel').value = formData.telefoneResponsavel || '';
+    document.getElementById('whatsappResponsavel').value = formData.whatsappResponsavel || '';
+    document.getElementById('produto').value = formData.produto || '';
+    document.getElementById('preco').value = formData.preco || '';
+    document.getElementById('quantidade').value = formData.quantidade || '1';
+  }
+});
+
+function logout() {
+  if (confirm('Tem certeza que deseja sair?')) {
+    localStorage.removeItem('userSession');
+    window.location.href = 'index.html';
+  }
+}
+</script>
 </body>
 </html>

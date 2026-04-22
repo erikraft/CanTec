@@ -1,229 +1,251 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro Cantina Pop Art</title>
-     <link rel="stylesheet" href="../css/style.css">
-     <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow: auto;
-        }
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>Criar Conta - CanTec</title>
+    <style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#04040a;font-family:'Segoe UI',system-ui,sans-serif}
+canvas#bg{position:absolute;inset:0;z-index:0}
 
-        header {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 20px;
-            text-align: center;
-            border-bottom: 4px solid var(--text-main);
-            z-index: 20;
-        }
+.aurora{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.aurora span{position:absolute;border-radius:50%;opacity:0.18;filter:blur(80px);animation:drift 14s ease-in-out infinite alternate}
+.aurora span:nth-child(1){width:600px;height:400px;background:#ff3333;top:-100px;left:-100px;animation-duration:13s}
+.aurora span:nth-child(2){width:500px;height:500px;background:#ff6600;top:30%;right:-150px;animation-duration:17s;animation-delay:-4s}
+.aurora span:nth-child(3){width:400px;height:350px;background:#ffcc00;bottom:-80px;left:30%;animation-duration:11s;animation-delay:-7s}
+.aurora span:nth-child(4){width:350px;height:400px;background:#ff3333;bottom:10%;left:-80px;animation-duration:15s;animation-delay:-2s;opacity:0.1}
+@keyframes drift{0%{transform:translate(0,0) scale(1)}100%{transform:translate(60px,40px) scale(1.2)}}
 
-        header img {
-            height: 60px;
-            margin-bottom: 10px;
-        }
+.grid{position:absolute;inset:0;z-index:2;pointer-events:none;
+  background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 100%)}
 
-        header h1 {
-            color: var(--vermelho);
-            margin: 0;
-            font-size: 28px;
-            text-transform: uppercase;
-        }
+.container{position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;overflow-y:auto}
 
-        .main-content {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 30px 20px;
-        }
+.form-wrapper{background:rgba(15,15,26,0.6);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:15px;padding:2.5rem;max-width:420px;width:100%;opacity:0;animation:fadeUp 0.8s 0.3s ease forwards;position:relative;z-index:15}
 
-        .register-container {
-            position: relative;
-            width: 380px !important;
-            z-index: 10;
-        }
+.form-header{text-align:center;margin-bottom:2rem}
+.form-header h1{font-size:1.8rem;color:#f8fafc;margin-bottom:0.5rem;font-weight:700}
+.form-header p{color:rgba(248,250,252,0.6);font-size:0.95rem}
 
-        .footer-text {
-            margin-top: 15px;
-            text-align: center;
-        }
+.form-group{margin-bottom:1.2rem}
+.form-group label{display:block;color:rgba(248,250,252,0.8);font-size:0.85rem;font-weight:600;margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.05em}
+.form-group input{width:100%;padding:0.9rem 1rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#f8fafc;font-size:0.95rem;transition:all 0.3s ease}
+.form-group input:focus{outline:none;background:rgba(255,255,255,0.08);border-color:rgba(255,102,0,0.5);box-shadow:0 0 20px rgba(255,102,0,0.2)}
+.form-group input::placeholder{color:rgba(248,250,252,0.3)}
 
-        .footer-text a {
-            color: var(--vermelho);
-            font-weight: 700;
-            text-decoration: none;
-            cursor: pointer;
-        }
+.form-actions{display:flex;gap:1rem;margin-top:1.8rem}
+.btn{flex:1;padding:0.9rem;background:linear-gradient(135deg,#ff3333,#ff6600);border:none;border-radius:8px;color:#fff;font-weight:600;cursor:pointer;transition:all 0.3s ease;text-transform:uppercase;font-size:0.85rem;letter-spacing:0.05em}
+.btn:hover{transform:translateY(-2px);opacity:0.9;box-shadow:0 10px 30px rgba(255,51,51,0.3)}
+.btn-secondary{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2)}
+.btn-secondary:hover{background:rgba(255,255,255,0.15)}
 
-        .footer-text a:hover {
-            text-decoration: underline;
-        }
+.toggle-link{text-align:center;margin-top:1.5rem;color:rgba(248,250,252,0.6);font-size:0.9rem}
+.toggle-link a{color:#ff6600;text-decoration:none;font-weight:600;cursor:pointer;transition:color 0.3s}
+.toggle-link a:hover{color:#ffcc00}
 
-        #toggleForm {
-            display: none;
-        }
+.success-msg{background:rgba(76,175,80,0.1);border:1px solid rgba(76,175,80,0.3);color:#4caf50;padding:1rem;border-radius:8px;margin-bottom:1rem;text-align:center;display:none;font-size:0.9rem}
 
-        button {
-            width: 100%;
-            padding: 15px;
-            background: var(--vermelho);
-            color: white;
-            border: 3px solid var(--text-main);
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 700;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Unbounded', sans-serif;
-            margin-top: 20px;
-        }
+.orb{position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,0.08);pointer-events:none;z-index:3}
+.orb-1{width:360px;height:360px;top:50%;left:50%;transform:translate(-50%,-50%);border-color:rgba(255,51,51,0.15);animation:orb-spin 28s linear infinite}
+.orb-2{width:520px;height:520px;top:50%;left:50%;transform:translate(-50%,-50%);border-color:rgba(255,102,0,0.1);animation:orb-spin 44s linear infinite reverse}
+.orb-3{width:700px;height:700px;top:50%;left:50%;transform:translate(-50%,-50%);border-color:rgba(255,204,0,0.07);animation:orb-spin 60s linear infinite}
+@keyframes orb-spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
 
-        button:hover {
-            background: var(--laranja);
-            transform: scale(1.02);
-        }
+.cursor-glow{position:absolute;width:300px;height:300px;border-radius:50%;pointer-events:none;z-index:4;opacity:0.12;background:radial-gradient(circle,#ff3333,transparent 70%);transform:translate(-50%,-50%);transition:opacity 0.3s}
 
-        .subtitle {
-            color: var(--text-main);
-            font-size: 14px;
-            margin-bottom: 20px;
-        }
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
 
-        page-footer {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 15px;
-            text-align: center;
-            border-top: 4px solid var(--text-main);
-            font-size: 11px;
-            color: var(--text-main);
-        }
-
-        .food-area {
-            position: fixed;
-        }
-     </style>
+@media(max-width:480px){.form-wrapper{padding:1.5rem;max-width:90%}.form-actions{flex-direction:column}.btn{width:100%}}
+    </style>
 </head>
 <body>
+<canvas id="bg"></canvas>
 
-    <div class="food-area">
-        <div class="food-item burger"></div>
-        <div class="food-item pizza"></div>
-        <div class="food-item fries"></div>
-        <div class="food-item hotdog"></div>
-        <div class="food-item burger"></div>
-        <div class="food-item pizza"></div>
+<div class="aurora">
+  <span></span><span></span><span></span><span></span>
+</div>
+<div class="grid"></div>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<div class="cursor-glow" id="glow"></div>
+
+<div class="container">
+  <div class="form-wrapper">
+    <div class="form-header">
+      <h1>CanTec</h1>
+      <p>Criar sua conta</p>
     </div>
 
-    <header>
-        <img src="../img/logo.png" alt="Logo Cantina Pop Art">
-        <h1>Cantina Pop Art</h1>
-    </header>
+    <div id="successMessage" class="success-msg">✓ Conta criada com sucesso! Redirecionando...</div>
 
-    <div class="main-content">
-        <!-- Formulário de Registro -->
-        <div class="register-container" id="registerForm">
-            <h2>Consumo consciente, gestão eficiente</h2>
-            <p class="subtitle">Crie sua conta na cantina mais tech</p>
-            
-            <form id="signupForm" onsubmit="handleSignup(event)">
-                <div class="input-group">
-                    <label for="nomeReg">Nome Completo</label>
-                    <input type="text" id="nomeReg" name="nomeReg" placeholder="Seu nome aqui" required>
-                </div>
-                
-                <div class="input-group">
-                    <label for="emailReg">E-mail de Cadastro</label>
-                    <input type="email" id="emailReg" name="emailReg" placeholder="exemplo@email.com" required>
-                </div>
-                
-                <div class="input-group">
-                    <label for="senhaReg">Senha Super Segura</label>
-                    <input type="password" id="senhaReg" name="senhaReg" placeholder="********" required>
-                </div>
-                
-                <button type="submit">Bora Pedir!</button>
-            </form>
+    <!-- Formulário de Registro -->
+    <form id="registerForm" onsubmit="handleSignup(event)">
+      <div class="form-group">
+        <label for="nomeReg">Nome Completo</label>
+        <input type="text" id="nomeReg" name="nomeReg" placeholder="Seu nome aqui" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="emailReg">E-mail</label>
+        <input type="email" id="emailReg" name="emailReg" placeholder="seu.email@exemplo.com" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="senhaReg">Senha</label>
+        <input type="password" id="senhaReg" name="senhaReg" placeholder="Mínimo 6 caracteres" required>
+      </div>
 
-            <div class="footer-text">
-                Já é de casa? <a onclick="toggleForms()">Fazer Login</a>
-            </div>
-        </div>
+      <div class="form-actions">
+        <button type="submit" class="btn">Criar Conta</button>
+      </div>
+    </form>
 
-        <!-- Formulário de Login -->
-        <div class="register-container" id="loginForm" style="display: none;">
-            <h2>Bem-vindo de Volta!</h2>
-            <p class="subtitle">Acesse sua conta na cantina</p>
-            
-            <form id="signinForm" onsubmit="handleLogin(event)">
-                <div class="input-group">
-                    <label for="emailLog">E-mail</label>
-                    <input type="email" id="emailLog" name="emailLog" placeholder="seu.email@exemplo.com" required>
-                </div>
-                
-                <div class="input-group">
-                    <label for="senhaLog">Senha</label>
-                    <input type="password" id="senhaLog" name="senhaLog" placeholder="********" required>
-                </div>
-                
-                <button type="submit">Entrar</button>
-            </form>
+    <div class="toggle-link">
+      Já tem conta? <a onclick="toggleForms()">Fazer Login</a>
+    </div>
+  </div>
 
-            <div class="footer-text">
-                Novo por aqui? <a onclick="toggleForms()">Criar Conta</a>
-            </div>
-        </div>
+  <!-- Formulário de Login -->
+  <div class="form-wrapper" id="loginWrapper" style="display:none;animation-delay:0.4s">
+    <div class="form-header">
+      <h1>CanTec</h1>
+      <p>Faça Login</p>
     </div>
 
-    <footer style="background: rgba(255, 255, 255, 0.95); padding: 15px; text-align: center; border-top: 4px solid var(--text-main); font-size: 11px; color: var(--text-main);">
-        <p>&copy; 2026 Cantina Pop Art. Desenvolvido com tecnologia e eficiência.</p>
-    </footer>
+    <form id="loginForm" onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label for="emailLog">E-mail</label>
+        <input type="email" id="emailLog" name="emailLog" placeholder="seu.email@exemplo.com" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="senhaLog">Senha</label>
+        <input type="password" id="senhaLog" name="senhaLog" placeholder="Sua senha" required>
+      </div>
 
-    <script>
-        function toggleForms() {
-            const registerForm = document.getElementById('registerForm');
-            const loginForm = document.getElementById('loginForm');
-            
-            registerForm.style.display = registerForm.style.display === 'none' ? 'block' : 'none';
-            loginForm.style.display = loginForm.style.display === 'none' ? 'block' : 'none';
-        }
+      <div class="form-actions">
+        <button type="submit" class="btn">Entrar</button>
+      </div>
+    </form>
 
-        function handleSignup(event) {
-            event.preventDefault();
-            
-            const userData = {
-                nome: document.getElementById('nomeReg').value,
-                email: document.getElementById('emailReg').value,
-                senha: document.getElementById('senhaReg').value
-            };
+    <div class="toggle-link">
+      Novo por aqui? <a onclick="toggleForms()">Criar Conta</a>
+    </div>
+  </div>
+</div>
 
-            // Salvar no localStorage
-            localStorage.setItem('userAccount', JSON.stringify(userData));
-            localStorage.setItem('userSession', 'logado');
+<script>
+const canvas = document.getElementById('bg');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [], mouse = {x: -9999, y: -9999};
 
-            // Redirecionar para dashboard
-            window.location.href = 'dashboard.html';
-        }
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
 
-        function handleLogin(event) {
-            event.preventDefault();
-            
-            // Simular login verificando se existe uma conta
-            const email = document.getElementById('emailLog').value;
-            const password = document.getElementById('senhaLog').value;
+const N = 90;
+function mkP() {
+  return {
+    x: Math.random() * W, y: Math.random() * H,
+    vx: (Math.random() - 0.5) * 0.35,
+    vy: (Math.random() - 0.5) * 0.35,
+    r: Math.random() * 1.5 + 0.4,
+    a: Math.random()
+  };
+}
+for (let i = 0; i < N; i++) particles.push(mkP());
 
-            // Para fins de demonstração, aceitar qualquer email/senha válidos
-            localStorage.setItem('userSession', 'logado');
-            localStorage.setItem('loginEmail', email);
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+  const LINK = 130;
+  for (let i = 0; i < N; i++) {
+    const p = particles[i];
+    p.x += p.vx; p.y += p.vy;
+    if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+    if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+    const dx = p.x - mouse.x, dy = p.y - mouse.y;
+    const md = Math.sqrt(dx*dx+dy*dy);
+    if (md < 120) { p.x += dx/md*0.6; p.y += dy/md*0.6; }
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(255,102,0,${0.35 + p.a*0.3})`;
+    ctx.fill();
+  }
+  for (let i = 0; i < N; i++) {
+    for (let j = i+1; j < N; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const d = Math.sqrt(dx*dx+dy*dy);
+      if (d < LINK) {
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `rgba(255,102,0,${0.12*(1-d/LINK)})`;
+        ctx.lineWidth = 0.6;
+        ctx.stroke();
+      }
+    }
+    const dx = particles[i].x - mouse.x, dy = particles[i].y - mouse.y;
+    const d = Math.sqrt(dx*dx+dy*dy);
+    if (d < 160) {
+      ctx.beginPath();
+      ctx.moveTo(particles[i].x, particles[i].y);
+      ctx.lineTo(mouse.x, mouse.y);
+      ctx.strokeStyle = `rgba(255,204,0,${0.18*(1-d/160)})`;
+      ctx.lineWidth = 0.7;
+      ctx.stroke();
+    }
+  }
+  requestAnimationFrame(draw);
+}
+draw();
 
-            // Redirecionar para dashboard
-            window.location.href = 'dashboard.html';
-        }
-    </script>
+const glow = document.getElementById('glow');
+document.addEventListener('mousemove', e => {
+  mouse.x = e.clientX; mouse.y = e.clientY;
+  glow.style.left = e.clientX + 'px';
+  glow.style.top = e.clientY + 'px';
+  glow.style.opacity = '0.13';
+});
+document.addEventListener('mouseleave', () => { glow.style.opacity = '0'; });
 
+function toggleForms() {
+  document.getElementById('registerForm').parentElement.style.display = 
+    document.getElementById('registerForm').parentElement.style.display === 'none' ? 'block' : 'none';
+  document.getElementById('loginWrapper').style.display = 
+    document.getElementById('loginWrapper').style.display === 'none' ? 'block' : 'none';
+}
+
+function handleSignup(event) {
+  event.preventDefault();
+  const userData = {
+    nome: document.getElementById('nomeReg').value,
+    email: document.getElementById('emailReg').value,
+    senha: document.getElementById('senhaReg').value
+  };
+  localStorage.setItem('userAccount', JSON.stringify(userData));
+  localStorage.setItem('userSession', 'logado');
+  document.getElementById('successMessage').style.display = 'block';
+  setTimeout(() => window.location.href = 'dashboard.html', 1500);
+}
+
+function handleLogin(event) {
+  event.preventDefault();
+  const email = document.getElementById('emailLog').value;
+  localStorage.setItem('userSession', 'logado');
+  localStorage.setItem('loginEmail', email);
+  document.getElementById('successMessage').style.display = 'block';
+  setTimeout(() => window.location.href = 'dashboard.html', 1500);
+}
+</script>
 </body>
 </html>
