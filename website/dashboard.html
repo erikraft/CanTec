@@ -3,16 +3,12 @@
 <head>
     <meta charset="UTF-8"/>
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; img-src 'self' data:; font-src 'self' https://cdnjs.cloudflare.com; connect-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'; upgrade-insecure-requests">
-    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
-    <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="theme-color" content="#ff6600"/>
-    <meta name="mobile-web-app-capable" content="yes"/>
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
     <meta name="apple-mobile-web-app-title" content="CanTec"/>
-    <title>Dashboard - CanTec</title>
+    <title>Painel da Cantina - CanTec</title>
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="icon" type="image/png" sizes="192x192" href="img/logo.png">
     <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
@@ -21,7 +17,6 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;height:100%;overflow:hidden;background:#04040a;font-family:'Segoe UI',system-ui,sans-serif;color:#f8fafc}
 canvas#bg{position:absolute;inset:0;z-index:0}
-
 .aurora{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
 .aurora span{position:absolute;border-radius:50%;opacity:0.18;filter:blur(80px);animation:drift 14s ease-in-out infinite alternate}
 .aurora span:nth-child(1){width:600px;height:400px;background:#ff3333;top:-100px;left:-100px;animation-duration:13s}
@@ -29,163 +24,106 @@ canvas#bg{position:absolute;inset:0;z-index:0}
 .aurora span:nth-child(3){width:400px;height:350px;background:#ffcc00;bottom:-80px;left:30%;animation-duration:11s;animation-delay:-7s}
 .aurora span:nth-child(4){width:350px;height:400px;background:#ff3333;bottom:10%;left:-80px;animation-duration:15s;animation-delay:-2s;opacity:0.1}
 @keyframes drift{0%{transform:translate(0,0) scale(1)}100%{transform:translate(60px,40px) scale(1.2)}}
-
-.grid{position:absolute;inset:0;z-index:2;pointer-events:none;
-  background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);
-  background-size:60px 60px;
-  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 100%)}
-
-header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(15,15,26,0.7);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,0.1);padding:1rem 2rem;display:flex;align-items:center;justify-content:center;gap:.75rem}
-.header-logo{width:42px;height:42px;object-fit:contain;border-radius:8px;filter:drop-shadow(0 2px 8px rgba(255,102,0,.35))}
-header h1{font-size:1.5rem;font-weight:700;margin:0;background:linear-gradient(135deg,#ff3333,#ff6600);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-
-.dashboard{position:absolute;inset:0;top:70px;z-index:10;display:flex;flex-direction:column;align-items:center;padding:2rem;overflow-y:auto}
-
-.form-wrapper{background:rgba(15,15,26,0.6);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:15px;padding:2rem;max-width:550px;width:100%;opacity:0;animation:fadeUp 0.8s 0.2s ease forwards;position:relative;z-index:15}
-
-.form-header{text-align:center;margin-bottom:1.5rem}
-.form-header h2{font-size:1.5rem;color:#f8fafc;margin-bottom:0.5rem}
-
-.section{margin-bottom:1.5rem;border-bottom:1px solid rgba(255,102,0,0.3);padding-bottom:1.5rem}
+.grid{position:absolute;inset:0;z-index:2;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 100%)}
+header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(15,15,26,0.75);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,0.1);padding:1rem 2rem;display:flex;align-items:center;justify-content:center;gap:.75rem}
+.header-logo{width:42px;height:42px;object-fit:contain;border-radius:8px}
+header h1{font-size:1.35rem;background:linear-gradient(135deg,#ff3333,#ff6600);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.dashboard{position:absolute;inset:0;top:76px;z-index:10;display:flex;flex-direction:column;align-items:center;padding:1.5rem;overflow-y:auto}
+.form-wrapper{background:rgba(15,15,26,0.65);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:1.6rem;max-width:760px;width:100%;animation:fadeUp .8s .2s ease forwards}
+.section{margin-bottom:1.2rem;border-bottom:1px solid rgba(255,102,0,.25);padding-bottom:1rem}
 .section:last-child{border-bottom:none;margin-bottom:0}
-.section-title{font-size:0.85rem;font-weight:700;text-transform:uppercase;color:#ff6600;margin-bottom:1rem;letter-spacing:0.05em;display:flex;align-items:center;gap:.5rem}
-.section-title i{font-size:.95rem}
-
-.input-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-.input-group{margin-bottom:1rem}
-.input-group label{display:block;font-size:0.8rem;font-weight:600;text-transform:uppercase;color:rgba(248,250,252,0.8);margin-bottom:0.4rem;letter-spacing:0.05em}
-.input-group input,.input-group select{width:100%;padding:0.8rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#f8fafc;font-size:0.9rem;transition:all 0.3s ease}
-.input-group input:focus,.input-group select:focus{outline:none;background:rgba(255,255,255,0.08);border-color:rgba(255,102,0,0.5);box-shadow:0 0 20px rgba(255,102,0,0.2)}
-.input-group input::placeholder{color:rgba(248,250,252,0.3)}
-
-.btn-group{display:flex;gap:1rem;margin-top:1.5rem;flex-wrap:wrap}
-.btn{flex:1;min-width:120px;padding:0.85rem;border:none;border-radius:8px;font-weight:600;cursor:pointer;transition:all 0.3s ease;text-transform:uppercase;font-size:0.8rem;letter-spacing:0.05em;display:flex;align-items:center;justify-content:center;gap:.45rem}
+.section-title{font-size:.82rem;font-weight:700;text-transform:uppercase;color:#ff6600;margin-bottom:.8rem;letter-spacing:.04em}
+.input-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.input-group{margin-bottom:.8rem}
+.input-group label{display:block;font-size:.78rem;color:rgba(248,250,252,.8);margin-bottom:.4rem;text-transform:uppercase}
+.input-group input{width:100%;padding:.75rem;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#fff}
+.input-group input:focus{outline:none;border-color:rgba(255,102,0,.5)}
+.readonly-box{padding:.9rem;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);border-radius:8px;color:#f8fafc}
+.readonly-box small{display:block;color:rgba(248,250,252,.6);margin-top:.35rem}
+.btn-group{display:flex;gap:.8rem;flex-wrap:wrap;margin-top:.8rem}
+.btn{flex:1;min-width:120px;padding:.8rem;border:none;border-radius:8px;font-weight:600;cursor:pointer;text-transform:uppercase;font-size:.8rem}
 .btn-save{background:linear-gradient(135deg,#ff3333,#ff6600);color:#fff}
-.btn-save:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(255,51,51,0.3)}
-.btn-clear{background:rgba(255,204,0,0.2);border:1px solid rgba(255,204,0,0.5);color:#ffcc00}
-.btn-clear:hover{background:rgba(255,204,0,0.3)}
-.btn-logout{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#f8fafc}
-.btn-logout:hover{background:rgba(255,255,255,0.15)}
-
-.success-msg{background:rgba(76,175,80,0.15);border:1px solid rgba(76,175,80,0.4);color:#4caf50;padding:1rem;border-radius:8px;margin-bottom:1rem;text-align:center;display:none;font-weight:600;font-size:0.9rem}
-
-.orb{position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,0.08);pointer-events:none;z-index:3}
-.orb-1{width:360px;height:360px;top:50%;left:50%;transform:translate(-50%,-50%);border-color:rgba(255,51,51,0.15);animation:orb-spin 28s linear infinite}
-.orb-2{width:520px;height:520px;top:50%;left:50%;transform:translate(-50%,-50%);border-color:rgba(255,102,0,0.1);animation:orb-spin 44s linear infinite reverse}
-.orb-3{width:700px;height:700px;top:50%;left:50%;transform:translate(-50%,-50%);border-color:rgba(255,204,0,0.07);animation:orb-spin 60s linear infinite}
+.btn-clear{background:rgba(255,204,0,.2);border:1px solid rgba(255,204,0,.5);color:#ffcc00}
+.btn-logout{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#f8fafc}
+.success-msg{display:none;padding:.9rem;border-radius:8px;margin-bottom:.9rem;font-size:.9rem}
+.orb{position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,.08);pointer-events:none;z-index:3}
+.orb-1{width:360px;height:360px;top:50%;left:50%;transform:translate(-50%,-50%);border-color:rgba(255,51,51,.15);animation:orb-spin 28s linear infinite}
+.orb-2{width:520px;height:520px;top:50%;left:50%;transform:translate(-50%,-50%);border-color:rgba(255,102,0,.1);animation:orb-spin 44s linear infinite reverse}
 @keyframes orb-spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
-
-.cursor-glow{position:absolute;width:300px;height:300px;border-radius:50%;pointer-events:none;z-index:4;opacity:0.12;background:radial-gradient(circle,#ff3333,transparent 70%);transform:translate(-50%,-50%);transition:opacity 0.3s}
-
-@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-
-@media(max-width:640px){.form-wrapper{padding:1.5rem}.input-row{grid-template-columns:1fr}.btn-group{flex-direction:column}.btn{width:100%}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:640px){.input-row{grid-template-columns:1fr}}
     </style>
 </head>
 <body>
 <canvas id="bg"></canvas>
-
-<div class="aurora">
-  <span></span><span></span><span></span><span></span>
-</div>
+<div class="aurora"><span></span><span></span><span></span><span></span></div>
 <div class="grid"></div>
-
-<div class="orb orb-1"></div>
-<div class="orb orb-2"></div>
-<div class="orb orb-3"></div>
-
-<div class="cursor-glow" id="glow"></div>
+<div class="orb orb-1"></div><div class="orb orb-2"></div>
 
 <header>
   <img src="img/logo.png" alt="Logo CanTec" class="header-logo">
-  <h1>CanTec - Dashboard</h1>
+  <h1>Painel de Funcionário - CanTec</h1>
 </header>
 
 <div class="dashboard">
   <div class="form-wrapper">
-    <div class="form-header">
-      <h2>Gerenciador de Pedidos</h2>
+    <div id="successMessage" class="success-msg"></div>
+
+    <div class="section">
+      <h3 class="section-title"><i class="fa-solid fa-store"></i> Comércio</h3>
+      <div class="readonly-box" id="nomeComercioBox">Cantina Escola CanTec<small id="usuarioFuncionario"></small></div>
     </div>
 
-    <div id="successMessage" class="success-msg"><i class="fa-solid fa-circle-check"></i> Dados salvos com sucesso!</div>
-
     <form id="dashboardForm">
-      <!-- Informações do Filho -->
       <div class="section">
-        <h3 class="section-title"><i class="fa-solid fa-user"></i> Informações do Filho</h3>
-        
+        <h3 class="section-title"><i class="fa-solid fa-user-tie"></i> Funcionário (cache)</h3>
         <div class="input-group">
-          <label for="nomeFilho">Nome do Filho</label>
-          <input type="text" id="nomeFilho" placeholder="Nome completo" required>
+          <label for="funcionarioUsername">Nome de usuário</label>
+          <input type="text" id="funcionarioUsername" placeholder="Ex: joao.cantina" required>
         </div>
-        
+        <small style="color:rgba(248,250,252,.6)">Esse nome fica salvo no cache e não precisa digitar em todo pedido.</small>
+      </div>
+
+      <div class="section">
+        <h3 class="section-title"><i class="fa-solid fa-user-graduate"></i> Aluno</h3>
         <div class="input-row">
           <div class="input-group">
-            <label for="emailFilho">Email</label>
-            <input type="email" id="emailFilho" placeholder="email@exemplo.com">
+            <label for="nomeAluno">Nome completo do aluno</label>
+            <input type="text" id="nomeAluno" required placeholder="Nome completo">
           </div>
           <div class="input-group">
-            <label for="telefoneFilho">Telefone</label>
-            <input type="tel" id="telefoneFilho" placeholder="(11) 99999-9999">
+            <label for="telefoneAluno">Telefone do aluno</label>
+            <input type="tel" id="telefoneAluno" placeholder="(11) 99999-9999">
           </div>
-        </div>
-
-        <div class="input-group">
-          <label for="whatsappFilho">WhatsApp</label>
-          <input type="tel" id="whatsappFilho" placeholder="(11) 99999-9999">
         </div>
       </div>
 
-      <!-- Informações do Responsável -->
-      <div class="section">
-        <h3 class="section-title"><i class="fa-solid fa-people-roof"></i> Responsável</h3>
-        
-        <div class="input-group">
-          <label for="nomeResponsavel">Nome do Responsável</label>
-          <input type="text" id="nomeResponsavel" placeholder="Nome completo" required>
-        </div>
-        
-        <div class="input-row">
-          <div class="input-group">
-            <label for="emailResponsavel">Email</label>
-            <input type="email" id="emailResponsavel" placeholder="email@exemplo.com">
-          </div>
-          <div class="input-group">
-            <label for="telefoneResponsavel">Telefone</label>
-            <input type="tel" id="telefoneResponsavel" placeholder="(11) 99999-9999">
-          </div>
-        </div>
-
-        <div class="input-group">
-          <label for="whatsappResponsavel">WhatsApp</label>
-          <input type="tel" id="whatsappResponsavel" placeholder="(11) 99999-9999">
-        </div>
-      </div>
-
-      <!-- Informações do Pedido -->
       <div class="section">
         <h3 class="section-title"><i class="fa-solid fa-bag-shopping"></i> Pedido</h3>
-        
-        <div class="input-group">
-          <label for="produto">Produto</label>
-          <input type="text" id="produto" placeholder="Ex: Pizza, Hambúrguer..." required>
-        </div>
-
         <div class="input-row">
           <div class="input-group">
-            <label for="preco">Preço (R$)</label>
-            <input type="number" id="preco" placeholder="0.00" step="0.01" min="0" required>
+            <label for="produto">Produto</label>
+            <input type="text" id="produto" required placeholder="Ex: coxinha + suco">
           </div>
           <div class="input-group">
+            <label for="preco">Preço (R$)</label>
+            <input type="number" id="preco" step="0.01" min="0" required placeholder="0.00">
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="input-group">
             <label for="quantidade">Quantidade</label>
-            <input type="number" id="quantidade" placeholder="1" min="1" value="1" required>
+            <input type="number" id="quantidade" min="1" value="1" required>
+          </div>
+          <div class="input-group">
+            <label for="observacao">Observação</label>
+            <input type="text" id="observacao" placeholder="Sem cebola, etc.">
           </div>
         </div>
       </div>
 
-      <!-- Botões -->
       <div class="btn-group">
-        <button type="submit" class="btn btn-save"><i class="fa-solid fa-floppy-disk"></i> Salvar</button>
+        <button type="submit" class="btn btn-save"><i class="fa-solid fa-floppy-disk"></i> Registrar Pedido</button>
         <button type="reset" class="btn btn-clear"><i class="fa-solid fa-trash"></i> Limpar</button>
         <button type="button" class="btn btn-logout" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
       </div>
@@ -197,184 +135,107 @@ header h1{font-size:1.5rem;font-weight:700;margin:0;background:linear-gradient(1
 const canvas = document.getElementById('bg');
 const ctx = canvas.getContext('2d');
 let W, H, particles = [], mouse = {x: -9999, y: -9999};
+const EMPLOYEE_CACHE_KEY = 'cantinaFuncionarioCache';
+const ORDERS_KEY = 'cantinaPedidos';
+const form = document.getElementById('dashboardForm');
 
-function resize() {
-  W = canvas.width = window.innerWidth;
-  H = canvas.height = window.innerHeight;
-}
-resize();
-window.addEventListener('resize', resize);
+function resize(){W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight;}
+resize(); window.addEventListener('resize', resize);
+for(let i=0;i<70;i++){particles.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35,r:Math.random()*1.5+.4,a:Math.random()});}
+(function draw(){ctx.clearRect(0,0,W,H);const LINK=130;for(let i=0;i<particles.length;i++){const p=particles[i];p.x+=p.vx;p.y+=p.vy;if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(255,102,0,${0.35+p.a*0.3})`;ctx.fill();for(let j=i+1;j<particles.length;j++){const dx=p.x-particles[j].x,dy=p.y-particles[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<LINK){ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(particles[j].x,particles[j].y);ctx.strokeStyle=`rgba(255,102,0,${0.12*(1-d/LINK)})`;ctx.lineWidth=0.6;ctx.stroke();}}}requestAnimationFrame(draw);}());
 
-const N = 90;
-function mkP() {
-  return {
-    x: Math.random() * W, y: Math.random() * H,
-    vx: (Math.random() - 0.5) * 0.35,
-    vy: (Math.random() - 0.5) * 0.35,
-    r: Math.random() * 1.5 + 0.4,
-    a: Math.random()
-  };
-}
-for (let i = 0; i < N; i++) particles.push(mkP());
-
-function draw() {
-  ctx.clearRect(0, 0, W, H);
-  const LINK = 130;
-  for (let i = 0; i < N; i++) {
-    const p = particles[i];
-    p.x += p.vx; p.y += p.vy;
-    if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
-    if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
-    const dx = p.x - mouse.x, dy = p.y - mouse.y;
-    const md = Math.sqrt(dx*dx+dy*dy);
-    if (md < 120) { p.x += dx/md*0.6; p.y += dy/md*0.6; }
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-    ctx.fillStyle = `rgba(255,102,0,${0.35 + p.a*0.3})`;
-    ctx.fill();
-  }
-  for (let i = 0; i < N; i++) {
-    for (let j = i+1; j < N; j++) {
-      const dx = particles[i].x - particles[j].x;
-      const dy = particles[i].y - particles[j].y;
-      const d = Math.sqrt(dx*dx+dy*dy);
-      if (d < LINK) {
-        ctx.beginPath();
-        ctx.moveTo(particles[i].x, particles[i].y);
-        ctx.lineTo(particles[j].x, particles[j].y);
-        ctx.strokeStyle = `rgba(255,102,0,${0.12*(1-d/LINK)})`;
-        ctx.lineWidth = 0.6;
-        ctx.stroke();
-      }
-    }
-    const dx = particles[i].x - mouse.x, dy = particles[i].y - mouse.y;
-    const d = Math.sqrt(dx*dx+dy*dy);
-    if (d < 160) {
-      ctx.beginPath();
-      ctx.moveTo(particles[i].x, particles[i].y);
-      ctx.lineTo(mouse.x, mouse.y);
-      ctx.strokeStyle = `rgba(255,204,0,${0.18*(1-d/160)})`;
-      ctx.lineWidth = 0.7;
-      ctx.stroke();
-    }
-  }
-  requestAnimationFrame(draw);
-}
-draw();
-
-const glow = document.getElementById('glow');
-document.addEventListener('mousemove', e => {
-  mouse.x = e.clientX; mouse.y = e.clientY;
-  glow.style.left = e.clientX + 'px';
-  glow.style.top = e.clientY + 'px';
-  glow.style.opacity = '0.13';
-});
-document.addEventListener('mouseleave', () => { glow.style.opacity = '0'; });
-
-const FORM_STORAGE_KEY = 'cantinaPedidoRascunho';
-const FORM_LIST_STORAGE_KEY = 'cantinaPedidos';
-const dashboardForm = document.getElementById('dashboardForm');
-
-function sanitizeInput(value) {
-  return String(value || '').replace(/[<>\"']/g, '').trim();
-}
-
-function getFormData() {
-  return {
-    nomeFilho: sanitizeInput(document.getElementById('nomeFilho').value),
-    emailFilho: sanitizeInput(document.getElementById('emailFilho').value),
-    telefoneFilho: sanitizeInput(document.getElementById('telefoneFilho').value),
-    whatsappFilho: sanitizeInput(document.getElementById('whatsappFilho').value),
-    nomeResponsavel: sanitizeInput(document.getElementById('nomeResponsavel').value),
-    emailResponsavel: sanitizeInput(document.getElementById('emailResponsavel').value),
-    telefoneResponsavel: sanitizeInput(document.getElementById('telefoneResponsavel').value),
-    whatsappResponsavel: sanitizeInput(document.getElementById('whatsappResponsavel').value),
-    produto: sanitizeInput(document.getElementById('produto').value),
-    preco: sanitizeInput(document.getElementById('preco').value),
-    quantidade: sanitizeInput(document.getElementById('quantidade').value)
-  };
-}
-
+function sanitizeInput(value) { return String(value || '').replace(/[<>"']/g, '').trim(); }
 function showSaveStatus(message, success = true) {
-  const successMsg = document.getElementById('successMessage');
-  successMsg.innerHTML = `<i class="fa-solid ${success ? 'fa-circle-check' : 'fa-triangle-exclamation'}"></i> ${message}`;
-  successMsg.style.display = 'block';
-  successMsg.style.color = success ? '#4caf50' : '#f59e0b';
-  successMsg.style.borderColor = success ? 'rgba(76,175,80,0.4)' : 'rgba(245,158,11,0.45)';
-  successMsg.style.background = success ? 'rgba(76,175,80,0.15)' : 'rgba(245,158,11,0.15)';
-  setTimeout(() => {
-    successMsg.style.display = 'none';
-  }, 2500);
+  const box = document.getElementById('successMessage');
+  box.textContent = message;
+  box.style.display = 'block';
+  box.style.color = success ? '#4caf50' : '#f59e0b';
+  box.style.border = success ? '1px solid rgba(76,175,80,.45)' : '1px solid rgba(245,158,11,.45)';
+  box.style.background = success ? 'rgba(76,175,80,.15)' : 'rgba(245,158,11,.15)';
+  setTimeout(() => box.style.display = 'none', 2600);
 }
 
-function saveToBrowserCache() {
-  try {
-    const formData = getFormData();
-    const pedidos = JSON.parse(localStorage.getItem(FORM_LIST_STORAGE_KEY) || '[]');
-    pedidos.push({
-      ...formData,
-      id: `pedido-${Date.now()}`,
-      criadoEm: new Date().toISOString()
-    });
+function loadEmployeeCache() {
+  const cache = JSON.parse(localStorage.getItem(EMPLOYEE_CACHE_KEY) || '{}');
+  document.getElementById('funcionarioUsername').value = cache.username || '';
 
-    localStorage.setItem(FORM_LIST_STORAGE_KEY, JSON.stringify(pedidos));
-    localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(formData));
-    showSaveStatus(`Comprovante salvo no cache! Total: ${pedidos.length}`);
-  } catch (error) {
-    console.error('Falha ao salvar no cache do navegador:', error);
-    showSaveStatus('Não foi possível salvar. Verifique as permissões do navegador.', false);
+  const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+  document.getElementById('usuarioFuncionario').textContent = currentUser.nome
+    ? `Logado como: ${currentUser.nome}`
+    : 'Logado como funcionário';
+}
+
+function saveEmployeeCache() {
+  localStorage.setItem(EMPLOYEE_CACHE_KEY, JSON.stringify({
+    username: sanitizeInput(document.getElementById('funcionarioUsername').value)
+  }));
+}
+
+function saveOrder() {
+  const username = sanitizeInput(document.getElementById('funcionarioUsername').value);
+  if (!username) {
+    showSaveStatus('Informe o nome de usuário do funcionário.', false);
+    return;
   }
-}
 
-function clearOrderFieldsForNextReceipt() {
+  const pedido = {
+    id: `pedido-${Date.now()}`,
+    criadoEm: new Date().toISOString(),
+    comercio: 'Cantina Escola CanTec',
+    funcionarioUsername: username,
+    alunoNomeCompleto: sanitizeInput(document.getElementById('nomeAluno').value),
+    alunoTelefone: sanitizeInput(document.getElementById('telefoneAluno').value),
+    produto: sanitizeInput(document.getElementById('produto').value),
+    preco: Number(document.getElementById('preco').value || 0),
+    quantidade: Number(document.getElementById('quantidade').value || 1),
+    observacao: sanitizeInput(document.getElementById('observacao').value)
+  };
+
+  const pedidos = JSON.parse(localStorage.getItem(ORDERS_KEY) || '[]');
+  pedidos.push(pedido);
+  localStorage.setItem(ORDERS_KEY, JSON.stringify(pedidos));
+  saveEmployeeCache();
+  showSaveStatus(`Pedido registrado para ${pedido.alunoNomeCompleto}. Total no histórico: ${pedidos.length}`);
+
+  document.getElementById('nomeAluno').value = '';
+  document.getElementById('telefoneAluno').value = '';
   document.getElementById('produto').value = '';
   document.getElementById('preco').value = '';
   document.getElementById('quantidade').value = '1';
-  document.getElementById('produto').focus();
+  document.getElementById('observacao').value = '';
+  document.getElementById('nomeAluno').focus();
 }
 
-dashboardForm.addEventListener('submit', function(e) {
-  e.preventDefault();
-  if (!dashboardForm.checkValidity()) {
-    dashboardForm.reportValidity();
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
+  if (!form.checkValidity()) {
+    form.reportValidity();
     return;
   }
-  saveToBrowserCache();
-  clearOrderFieldsForNextReceipt();
+  saveOrder();
 });
 
-// Carregar dados ao abrir
-window.addEventListener('load', function() {
-  const savedData = localStorage.getItem(FORM_STORAGE_KEY);
-  if (savedData) {
-    const formData = JSON.parse(savedData);
-    document.getElementById('nomeFilho').value = formData.nomeFilho || '';
-    document.getElementById('emailFilho').value = formData.emailFilho || '';
-    document.getElementById('telefoneFilho').value = formData.telefoneFilho || '';
-    document.getElementById('whatsappFilho').value = formData.whatsappFilho || '';
-    document.getElementById('nomeResponsavel').value = formData.nomeResponsavel || '';
-    document.getElementById('emailResponsavel').value = formData.emailResponsavel || '';
-    document.getElementById('telefoneResponsavel').value = formData.telefoneResponsavel || '';
-    document.getElementById('whatsappResponsavel').value = formData.whatsappResponsavel || '';
-    document.getElementById('produto').value = formData.produto || '';
-    document.getElementById('preco').value = formData.preco || '';
-    document.getElementById('quantidade').value = formData.quantidade || '1';
-  }
-});
-
-
-dashboardForm.addEventListener('reset', function() {
+form.addEventListener('reset', () => {
   setTimeout(() => {
-    localStorage.removeItem(FORM_STORAGE_KEY);
-    showSaveStatus('Campos limpos. Comprovantes já salvos continuam no cache.');
+    document.getElementById('quantidade').value = '1';
+    showSaveStatus('Campos limpos. Nome de usuário permanece no cache.');
   }, 0);
 });
 
-function logout() {
-  if (confirm('Tem certeza que deseja sair?')) {
-    localStorage.removeItem('userSession');
-    window.location.href = 'index.html';
+window.addEventListener('load', () => {
+  const role = localStorage.getItem('userRole');
+  if (localStorage.getItem('userSession') !== 'logado' || role !== 'funcionario') {
+    window.location.href = 'account.html';
+    return;
   }
+  loadEmployeeCache();
+});
+
+function logout() {
+  localStorage.removeItem('userSession');
+  localStorage.removeItem('currentUser');
+  localStorage.removeItem('userRole');
+  window.location.href = 'index.html';
 }
 </script>
 <script src="pwa.js"></script>

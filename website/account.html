@@ -40,21 +40,21 @@ canvas#bg{position:absolute;inset:0;z-index:0}
 
 .form-group{margin-bottom:1.2rem}
 .form-group label{display:block;color:rgba(248,250,252,0.8);font-size:0.85rem;font-weight:600;margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.05em}
-.form-group input{width:100%;padding:0.9rem 1rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#f8fafc;font-size:0.95rem;transition:all 0.3s ease}
-.form-group input:focus{outline:none;background:rgba(255,255,255,0.08);border-color:rgba(255,102,0,0.5);box-shadow:0 0 20px rgba(255,102,0,0.2)}
+.form-group input,.form-group select{width:100%;padding:0.9rem 1rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#f8fafc;font-size:0.95rem;transition:all 0.3s ease}
+.form-group input:focus,.form-group select:focus{outline:none;background:rgba(255,255,255,0.08);border-color:rgba(255,102,0,0.5);box-shadow:0 0 20px rgba(255,102,0,0.2)}
 .form-group input::placeholder{color:rgba(248,250,252,0.3)}
+.form-group select option{background:#0b0b12;color:#f8fafc}
 
 .form-actions{display:flex;gap:1rem;margin-top:1.8rem}
 .btn{flex:1;padding:0.9rem;background:linear-gradient(135deg,#ff3333,#ff6600);border:none;border-radius:8px;color:#fff;font-weight:600;cursor:pointer;transition:all 0.3s ease;text-transform:uppercase;font-size:0.85rem;letter-spacing:0.05em}
 .btn:hover{transform:translateY(-2px);opacity:0.9;box-shadow:0 10px 30px rgba(255,51,51,0.3)}
-.btn-secondary{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2)}
-.btn-secondary:hover{background:rgba(255,255,255,0.15)}
 
 .toggle-link{text-align:center;margin-top:1.5rem;color:rgba(248,250,252,0.6);font-size:0.9rem}
 .toggle-link a{color:#ff6600;text-decoration:none;font-weight:600;cursor:pointer;transition:color 0.3s}
 .toggle-link a:hover{color:#ffcc00}
 
 .success-msg{background:rgba(76,175,80,0.1);border:1px solid rgba(76,175,80,0.3);color:#4caf50;padding:1rem;border-radius:8px;margin-bottom:1rem;text-align:center;display:none;font-size:0.9rem}
+.error-msg{background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.45);color:#fda4af;padding:0.9rem;border-radius:8px;margin-bottom:1rem;text-align:center;display:none;font-size:0.9rem}
 
 .orb{position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,0.08);pointer-events:none;z-index:3}
 .orb-1{width:360px;height:360px;top:50%;left:50%;transform:translate(-50%,-50%);border-color:rgba(255,51,51,0.15);animation:orb-spin 28s linear infinite}
@@ -84,15 +84,15 @@ canvas#bg{position:absolute;inset:0;z-index:0}
 <div class="cursor-glow" id="glow"></div>
 
 <div class="container">
-  <div class="form-wrapper">
+  <div class="form-wrapper" id="registerWrapper">
     <div class="form-header">
       <h1>CanTec</h1>
       <p>Criar sua conta</p>
     </div>
 
-    <div id="successMessage" class="success-msg">✓ Conta criada com sucesso! Redirecionando...</div>
+    <div id="successMessage" class="success-msg">✓ Operação realizada com sucesso! Redirecionando...</div>
+    <div id="errorMessage" class="error-msg"></div>
 
-    <!-- Formulário de Registro -->
     <form id="registerForm" onsubmit="handleSignup(event)">
       <div class="form-group">
         <label for="nomeReg">Nome Completo</label>
@@ -106,7 +106,16 @@ canvas#bg{position:absolute;inset:0;z-index:0}
       
       <div class="form-group">
         <label for="senhaReg">Senha</label>
-        <input type="password" id="senhaReg" name="senhaReg" placeholder="Mínimo 6 caracteres" required>
+        <input type="password" id="senhaReg" name="senhaReg" placeholder="Mínimo 6 caracteres" required minlength="6">
+      </div>
+
+      <div class="form-group">
+        <label for="tipoReg">Você é...</label>
+        <select id="tipoReg" name="tipoReg" required>
+          <option value="">Selecione</option>
+          <option value="aluno">Aluno</option>
+          <option value="funcionario">Funcionário de cantina</option>
+        </select>
       </div>
 
       <div class="form-actions">
@@ -119,7 +128,6 @@ canvas#bg{position:absolute;inset:0;z-index:0}
     </div>
   </div>
 
-  <!-- Formulário de Login -->
   <div class="form-wrapper" id="loginWrapper" style="display:none;animation-delay:0.4s">
     <div class="form-header">
       <h1>CanTec</h1>
@@ -137,6 +145,15 @@ canvas#bg{position:absolute;inset:0;z-index:0}
         <input type="password" id="senhaLog" name="senhaLog" placeholder="Sua senha" required>
       </div>
 
+      <div class="form-group">
+        <label for="tipoLog">Entrar como</label>
+        <select id="tipoLog" name="tipoLog" required>
+          <option value="">Selecione</option>
+          <option value="aluno">Aluno</option>
+          <option value="funcionario">Funcionário de cantina</option>
+        </select>
+      </div>
+
       <div class="form-actions">
         <button type="submit" class="btn">Entrar</button>
       </div>
@@ -152,6 +169,7 @@ canvas#bg{position:absolute;inset:0;z-index:0}
 const canvas = document.getElementById('bg');
 const ctx = canvas.getContext('2d');
 let W, H, particles = [], mouse = {x: -9999, y: -9999};
+const USERS_STORAGE_KEY = 'cantinaUsers';
 
 function resize() {
   W = canvas.width = window.innerWidth;
@@ -226,33 +244,103 @@ document.addEventListener('mousemove', e => {
 });
 document.addEventListener('mouseleave', () => { glow.style.opacity = '0'; });
 
+function sanitizeInput(value) {
+  return String(value || '').replace(/[<>"']/g, '').trim();
+}
+
+function getUsers() {
+  return JSON.parse(localStorage.getItem(USERS_STORAGE_KEY) || '[]');
+}
+
+function saveUsers(users) {
+  localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(users));
+}
+
+function redirectByRole(role) {
+  const targetPage = role === 'funcionario' ? 'dashboard.html' : 'pedidos.html';
+  setTimeout(() => {
+    window.location.href = targetPage;
+  }, 1300);
+}
+
+function showMessage(message, isError = false) {
+  const successMessage = document.getElementById('successMessage');
+  const errorMessage = document.getElementById('errorMessage');
+
+  if (isError) {
+    successMessage.style.display = 'none';
+    errorMessage.textContent = message;
+    errorMessage.style.display = 'block';
+    return;
+  }
+
+  errorMessage.style.display = 'none';
+  successMessage.textContent = message;
+  successMessage.style.display = 'block';
+}
+
+function saveSession(user) {
+  localStorage.setItem('userSession', 'logado');
+  localStorage.setItem('currentUser', JSON.stringify({
+    nome: user.nome,
+    email: user.email,
+    tipo: user.tipo
+  }));
+  localStorage.setItem('userRole', user.tipo);
+}
+
 function toggleForms() {
-  document.getElementById('registerForm').parentElement.style.display = 
-    document.getElementById('registerForm').parentElement.style.display === 'none' ? 'block' : 'none';
-  document.getElementById('loginWrapper').style.display = 
+  document.getElementById('registerWrapper').style.display =
+    document.getElementById('registerWrapper').style.display === 'none' ? 'block' : 'none';
+  document.getElementById('loginWrapper').style.display =
     document.getElementById('loginWrapper').style.display === 'none' ? 'block' : 'none';
+  document.getElementById('successMessage').style.display = 'none';
+  document.getElementById('errorMessage').style.display = 'none';
 }
 
 function handleSignup(event) {
   event.preventDefault();
-  const userData = {
-    nome: document.getElementById('nomeReg').value,
-    email: document.getElementById('emailReg').value,
-    senha: document.getElementById('senhaReg').value
+
+  const newUser = {
+    nome: sanitizeInput(document.getElementById('nomeReg').value),
+    email: sanitizeInput(document.getElementById('emailReg').value).toLowerCase(),
+    senha: document.getElementById('senhaReg').value,
+    tipo: document.getElementById('tipoReg').value
   };
-  localStorage.setItem('userAccount', JSON.stringify(userData));
-  localStorage.setItem('userSession', 'logado');
-  document.getElementById('successMessage').style.display = 'block';
-  setTimeout(() => window.location.href = 'dashboard.html', 1500);
+
+  const users = getUsers();
+  const alreadyExists = users.some(user => user.email === newUser.email && user.tipo === newUser.tipo);
+
+  if (alreadyExists) {
+    showMessage('Já existe conta para esse e-mail nesse perfil.', true);
+    return;
+  }
+
+  users.push(newUser);
+  saveUsers(users);
+  saveSession(newUser);
+
+  showMessage('✓ Conta criada com sucesso! Redirecionando...');
+  redirectByRole(newUser.tipo);
 }
 
 function handleLogin(event) {
   event.preventDefault();
-  const email = document.getElementById('emailLog').value;
-  localStorage.setItem('userSession', 'logado');
-  localStorage.setItem('loginEmail', email);
-  document.getElementById('successMessage').style.display = 'block';
-  setTimeout(() => window.location.href = 'dashboard.html', 1500);
+
+  const email = sanitizeInput(document.getElementById('emailLog').value).toLowerCase();
+  const senha = document.getElementById('senhaLog').value;
+  const tipo = document.getElementById('tipoLog').value;
+
+  const user = getUsers().find(item => item.email === email && item.senha === senha && item.tipo === tipo);
+
+  if (!user) {
+    showMessage('Credenciais inválidas. Confira e tente novamente.', true);
+    return;
+  }
+
+  saveSession(user);
+  showMessage('✓ Login efetuado! Redirecionando...');
+  redirectByRole(tipo);
 }
 </script>
 <script src="pwa.js"></script>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="theme-color" content="#ff6600"/>
+  <title>Pedidos Feitos - CanTec</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#070710;color:#f8fafc;padding:1.2rem}
+header{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1rem}
+h1{font-size:1.2rem}
+.container{background:rgba(15,15,26,.85);border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:1rem;overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:760px}
+th,td{padding:.7rem;border-bottom:1px solid rgba(255,255,255,.08);text-align:left;font-size:.9rem}
+th{color:#ffcc00;text-transform:uppercase;font-size:.75rem;letter-spacing:.05em}
+tr:hover td{background:rgba(255,102,0,.07)}
+.badge{padding:.2rem .5rem;border-radius:999px;font-size:.72rem;background:rgba(255,102,0,.2);color:#ffcc00}
+.btn{padding:.65rem .9rem;border:none;border-radius:8px;cursor:pointer;font-weight:600}
+.btn-outline{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.2)}
+.empty{padding:1rem;color:rgba(248,250,252,.65)}
+  </style>
+</head>
+<body>
+<header>
+  <h1><i class="fa-solid fa-clipboard-list"></i> Pedidos feitos</h1>
+  <button class="btn btn-outline" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
+</header>
+
+<div class="container">
+  <table>
+    <thead>
+      <tr>
+        <th>Aluno</th>
+        <th>Produto</th>
+        <th>Qtd</th>
+        <th>Preço</th>
+        <th>Funcionário</th>
+        <th>Comércio</th>
+        <th>Data</th>
+      </tr>
+    </thead>
+    <tbody id="ordersTableBody"></tbody>
+  </table>
+  <p id="emptyState" class="empty" style="display:none;">Nenhum pedido registrado ainda.</p>
+</div>
+
+<script>
+const ORDERS_KEY = 'cantinaPedidos';
+
+function formatDate(isoDate) {
+  const date = new Date(isoDate);
+  return `${date.toLocaleDateString('pt-BR')} ${date.toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'})}`;
+}
+
+function escapeHtml(value) {
+  return String(value || '').replace(/[&<>"']/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[char]));
+}
+
+function renderOrders() {
+  const tableBody = document.getElementById('ordersTableBody');
+  const emptyState = document.getElementById('emptyState');
+  const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+  const allOrders = JSON.parse(localStorage.getItem(ORDERS_KEY) || '[]');
+
+  const filteredOrders = allOrders.filter(order => {
+    if (!currentUser.nome) return true;
+    return (order.alunoNomeCompleto || '').toLowerCase() === currentUser.nome.toLowerCase();
+  });
+
+  if (!filteredOrders.length) {
+    tableBody.innerHTML = '';
+    emptyState.style.display = 'block';
+    return;
+  }
+
+  emptyState.style.display = 'none';
+  tableBody.innerHTML = filteredOrders.map(order => `
+    <tr>
+      <td>${escapeHtml(order.alunoNomeCompleto)}</td>
+      <td>${escapeHtml(order.produto)} ${order.observacao ? `<span class="badge">${escapeHtml(order.observacao)}</span>` : ''}</td>
+      <td>${escapeHtml(order.quantidade)}</td>
+      <td>R$ ${Number(order.preco || 0).toFixed(2)}</td>
+      <td>${escapeHtml(order.funcionarioUsername || '-')}</td>
+      <td>${escapeHtml(order.comercio || '-')}</td>
+      <td>${formatDate(order.criadoEm)}</td>
+    </tr>
+  `).join('');
+}
+
+window.addEventListener('load', () => {
+  const role = localStorage.getItem('userRole');
+  if (localStorage.getItem('userSession') !== 'logado' || role !== 'aluno') {
+    window.location.href = 'account.html';
+    return;
+  }
+  renderOrders();
+});
+
+function logout() {
+  localStorage.removeItem('userSession');
+  localStorage.removeItem('currentUser');
+  localStorage.removeItem('userRole');
+  window.location.href = 'index.html';
+}
+</script>
+</body>
+</html>
