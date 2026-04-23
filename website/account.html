@@ -258,7 +258,7 @@ function saveUsers(users) {
 }
 
 function redirectByRole(role) {
-  const targetPage = role === 'funcionario' ? 'dashboard.html' : 'pedidos.html';
+  const targetPage = role === 'funcionario' ? 'dashboard.html' : 'shop.html';
   setTimeout(() => {
     window.location.href = targetPage;
   }, 1300);

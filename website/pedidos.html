@@ -4,48 +4,516 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="theme-color" content="#ff6600"/>
-  <title>Pedidos Feitos - CanTec</title>
+  <title>Meus Pedidos - CanTec</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="css/cursor.css">
   <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:#070710;color:#f8fafc;padding:1.2rem}
-header{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1rem}
-h1{font-size:1.2rem}
-.container{background:rgba(15,15,26,.85);border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:1rem;overflow:auto}
-table{width:100%;border-collapse:collapse;min-width:760px}
-th,td{padding:.7rem;border-bottom:1px solid rgba(255,255,255,.08);text-align:left;font-size:.9rem}
-th{color:#ffcc00;text-transform:uppercase;font-size:.75rem;letter-spacing:.05em}
-tr:hover td{background:rgba(255,102,0,.07)}
-.badge{padding:.2rem .5rem;border-radius:999px;font-size:.72rem;background:rgba(255,102,0,.2);color:#ffcc00}
-.btn{padding:.65rem .9rem;border:none;border-radius:8px;cursor:pointer;font-weight:600}
-.btn-outline{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.2)}
-.empty{padding:1rem;color:rgba(248,250,252,.65)}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #0a0a14 0%, #0f0f1a 100%);
+      color: #f8fafc;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Background particles effect */
+    .particles-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .particle {
+      position: absolute;
+      background: rgba(255, 102, 0, 0.3);
+      border-radius: 50%;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.3; }
+      50% { transform: translateY(-20px) rotate(180deg); opacity: 0.6; }
+    }
+
+    /* Main container */
+    .main-container {
+      position: relative;
+      z-index: 1;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    /* Header com logo e botão de saída */
+    .glass-header {
+      background: rgba(15, 15, 26, 0.6);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 102, 0, 0.3);
+      border-radius: 20px;
+      padding: 1rem 2rem;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo-icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, #ff3333, #ff6600);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 4px 15px rgba(255, 102, 0, 0.3);
+    }
+
+    .title h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #ff4444, #ff6600 55%, #ffcc00);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .title p {
+      font-size: 0.8rem;
+      color: rgba(248, 250, 252, 0.6);
+      margin-top: 0.2rem;
+    }
+
+    /* Botão de saída estilizado - mantido como está */
+    .btn-logout {
+      background: linear-gradient(135deg, #ff3333, #cc0000);
+      border: none;
+      color: #fff;
+      padding: 0.6rem 1.2rem;
+      border-radius: 40px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      box-shadow: 0 4px 12px rgba(255, 0, 0, 0.3);
+    }
+
+    .btn-logout:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 0, 0, 0.5);
+      background: linear-gradient(135deg, #ff4444, #dd0000);
+    }
+
+    .btn-logout:active {
+      transform: translateY(0);
+    }
+
+    /* Stats cards */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: rgba(15, 15, 26, 0.5);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 1.2rem;
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255, 102, 0, 0.3);
+      box-shadow: 0 8px 25px rgba(255, 102, 0, 0.15);
+    }
+
+    .stat-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: #ff6600;
+    }
+
+    .stat-value {
+      font-size: 1.8rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ff6600, #ffcc00);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: rgba(248, 250, 252, 0.6);
+      margin-top: 0.3rem;
+    }
+
+    /* Tabela moderna */
+    .orders-table-wrapper {
+      background: rgba(15, 15, 26, 0.6);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 102, 0, 0.2);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      margin-bottom: 2rem;
+    }
+
+    .table-header {
+      padding: 1.2rem 1.5rem;
+      background: rgba(255, 102, 0, 0.08);
+      border-bottom: 1px solid rgba(255, 102, 0, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .table-title {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+    }
+
+    .table-title i {
+      color: #ff6600;
+      font-size: 1.2rem;
+    }
+
+    .order-count {
+      background: rgba(255, 102, 0, 0.2);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #ffcc00;
+    }
+
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      padding: 1rem 1rem;
+      text-align: left;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(255, 204, 0, 0.8);
+      background: rgba(0, 0, 0, 0.2);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    td {
+      padding: 1rem 1rem;
+      font-size: 0.9rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.3s ease;
+    }
+
+    tr {
+      transition: all 0.3s ease;
+    }
+
+    tr:hover td {
+      background: rgba(255, 102, 0, 0.08);
+      transform: scale(1.01);
+    }
+
+    /* Badge moderno */
+    .badge-modern {
+      display: inline-block;
+      padding: 0.25rem 0.7rem;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      background: linear-gradient(135deg, rgba(255, 102, 0, 0.2), rgba(255, 51, 51, 0.2));
+      color: #ffcc00;
+      border: 1px solid rgba(255, 102, 0, 0.3);
+      margin-left: 0.3rem;
+    }
+
+    /* Produto com destaque */
+    .product-name {
+      font-weight: 600;
+      color: #ffcc00;
+    }
+
+    .price-highlight {
+      color: #4ade80;
+      font-weight: 700;
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+
+    .empty-icon {
+      font-size: 4rem;
+      color: rgba(255, 102, 0, 0.3);
+      margin-bottom: 1rem;
+    }
+
+    .empty-state p {
+      color: rgba(248, 250, 252, 0.6);
+      font-size: 1rem;
+    }
+
+    .empty-state small {
+      color: rgba(248, 250, 252, 0.4);
+      font-size: 0.85rem;
+    }
+
+    /* Seção de comprar mais */
+    .buy-more-section {
+      background: rgba(15, 15, 26, 0.6);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 102, 0, 0.3);
+      border-radius: 20px;
+      padding: 2rem;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .buy-more-section:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 40px rgba(255, 102, 0, 0.2);
+      border-color: rgba(255, 102, 0, 0.5);
+    }
+
+    .buy-more-icon {
+      font-size: 3rem;
+      color: #ff6600;
+      margin-bottom: 1rem;
+    }
+
+    .buy-more-section h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #ff6600, #ffcc00);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .buy-more-section p {
+      color: rgba(248, 250, 252, 0.6);
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+    }
+
+    .btn-buy-more {
+      background: linear-gradient(135deg, #ff3333, #ff6600);
+      border: none;
+      padding: 0.9rem 2rem;
+      border-radius: 40px;
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-size: 1rem;
+    }
+
+    .btn-buy-more:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(255, 102, 0, 0.4);
+    }
+
+    /* Animações */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .orders-table-wrapper, .buy-more-section {
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 102, 0, 0.5);
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 102, 0, 0.7);
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .main-container {
+        padding: 1rem;
+      }
+      
+      .glass-header {
+        padding: 1rem;
+      }
+      
+      th, td {
+        padding: 0.8rem;
+        font-size: 0.8rem;
+      }
+      
+      .stat-value {
+        font-size: 1.4rem;
+      }
+      
+      .btn-buy-more {
+        padding: 0.7rem 1.5rem;
+        font-size: 0.9rem;
+      }
+    }
   </style>
 </head>
 <body>
-<header>
-  <h1><i class="fa-solid fa-clipboard-list"></i> Pedidos feitos</h1>
-  <button class="btn btn-outline" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
-</header>
 
-<div class="container">
-  <table>
-    <thead>
-      <tr>
-        <th>Aluno</th>
-        <th>Produto</th>
-        <th>Qtd</th>
-        <th>Preço</th>
-        <th>Funcionário</th>
-        <th>Comércio</th>
-        <th>Data</th>
-      </tr>
-    </thead>
-    <tbody id="ordersTableBody"></tbody>
-  </table>
-  <p id="emptyState" class="empty" style="display:none;">Nenhum pedido registrado ainda.</p>
+<div class="particles-bg" id="particles"></div>
+
+<div class="main-container">
+  <!-- Header com logo na esquerda e botão de saída na direita -->
+  <div class="glass-header">
+    <div class="logo-area">
+      <div class="logo-icon">
+        <i class="fas fa-utensils"></i>
+      </div>
+      <div class="title">
+        <h1>Meus Pedidos</h1>
+        <p>Histórico completo da sua cantina</p>
+      </div>
+    </div>
+    <button class="btn-logout" onclick="logout()">
+      <i class="fa-solid fa-right-from-bracket"></i>
+      Sair
+    </button>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class="fas fa-clipboard-list"></i>
+      </div>
+      <div class="stat-value" id="totalOrders">0</div>
+      <div class="stat-label">Total de Pedidos</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class="fas fa-coins"></i>
+      </div>
+      <div class="stat-value" id="totalSpent">R$ 0</div>
+      <div class="stat-label">Total Gasto</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class="fas fa-boxes"></i>
+      </div>
+      <div class="stat-value" id="totalItems">0</div>
+      <div class="stat-label">Itens Comprados</div>
+    </div>
+  </div>
+
+  <!-- Tabela de pedidos -->
+  <div class="orders-table-wrapper">
+    <div class="table-header">
+      <div class="table-title">
+        <i class="fas fa-receipt"></i>
+        <span>Histórico de Pedidos</span>
+      </div>
+      <div class="order-count" id="orderCount">0 pedidos</div>
+    </div>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th><i class="fas fa-user-graduate"></i> Aluno</th>
+            <th><i class="fas fa-hamburger"></i> Produto</th>
+            <th><i class="fas fa-hashtag"></i> Qtd</th>
+            <th><i class="fas fa-tag"></i> Preço</th>
+            <th><i class="fas fa-store"></i> Comércio</th>
+            <th><i class="fas fa-calendar"></i> Data</th>
+          </tr>
+        </thead>
+        <tbody id="ordersTableBody"></tbody>
+      </table>
+    </div>
+    <div id="emptyState" class="empty-state" style="display: none;">
+      <div class="empty-icon">
+        <i class="fas fa-receipt"></i>
+      </div>
+      <p>Nenhum pedido encontrado</p>
+      <small>Você ainda não fez nenhum pedido na cantina</small>
+    </div>
+  </div>
+
+  <!-- Seção de Comprar Mais -->
+  <div class="buy-more-section">
+    <div class="buy-more-icon">
+      <i class="fas fa-cart-plus"></i>
+    </div>
+    <h3>Quer fazer mais pedidos?</h3>
+    <p>Volte para a cantina e faça novos pedidos agora mesmo!</p>
+    <button class="btn-buy-more" onclick="window.location.href='shop.html'">
+      <i class="fas fa-shopping-cart"></i>
+      Fazer Novo Pedido
+    </button>
+  </div>
 </div>
 
 <script>
@@ -53,11 +521,50 @@ const ORDERS_KEY = 'cantinaPedidos';
 
 function formatDate(isoDate) {
   const date = new Date(isoDate);
+  const now = new Date();
+  const diff = now - date;
+  const minutes = Math.floor(diff / 60000);
+  const hours = Math.floor(diff / 3600000);
+  const days = Math.floor(diff / 86400000);
+
+  if (minutes < 1) return 'Agora mesmo';
+  if (minutes < 60) return `${minutes} min atrás`;
+  if (hours < 24) return `${hours} h atrás`;
+  if (days < 7) return `${days} d atrás`;
+  return date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+}
+
+function formatFullDate(isoDate) {
+  const date = new Date(isoDate);
   return `${date.toLocaleDateString('pt-BR')} ${date.toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'})}`;
 }
 
 function escapeHtml(value) {
-  return String(value || '').replace(/[&<>"']/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[char]));
+  if (!value) return '-';
+  return String(value).replace(/[&<>"']/g, (char) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  }[char]));
+}
+
+function createParticles() {
+  const particleContainer = document.getElementById('particles');
+  particleContainer.innerHTML = '';
+  for (let i = 0; i < 50; i++) {
+    const particle = document.createElement('div');
+    particle.classList.add('particle');
+    const size = Math.random() * 4 + 1;
+    particle.style.width = `${size}px`;
+    particle.style.height = `${size}px`;
+    particle.style.left = `${Math.random() * 100}%`;
+    particle.style.top = `${Math.random() * 100}%`;
+    particle.style.animationDelay = `${Math.random() * 5}s`;
+    particle.style.animationDuration = `${Math.random() * 4 + 4}s`;
+    particleContainer.appendChild(particle);
+  }
 }
 
 function renderOrders() {
@@ -69,7 +576,17 @@ function renderOrders() {
   const filteredOrders = allOrders.filter(order => {
     if (!currentUser.nome) return true;
     return (order.alunoNomeCompleto || '').toLowerCase() === currentUser.nome.toLowerCase();
-  });
+  }).sort((a, b) => new Date(b.criadoEm) - new Date(a.criadoEm));
+
+  // Update stats
+  document.getElementById('totalOrders').textContent = filteredOrders.length;
+  document.getElementById('orderCount').textContent = `${filteredOrders.length} pedido${filteredOrders.length !== 1 ? 's' : ''}`;
+  
+  const totalSpent = filteredOrders.reduce((sum, order) => sum + (Number(order.preco) || 0), 0);
+  document.getElementById('totalSpent').textContent = `R$ ${totalSpent.toFixed(2)}`;
+  
+  const totalItems = filteredOrders.reduce((sum, order) => sum + (Number(order.quantidade) || 0), 0);
+  document.getElementById('totalItems').textContent = totalItems;
 
   if (!filteredOrders.length) {
     tableBody.innerHTML = '';
@@ -78,15 +595,21 @@ function renderOrders() {
   }
 
   emptyState.style.display = 'none';
-  tableBody.innerHTML = filteredOrders.map(order => `
-    <tr>
-      <td>${escapeHtml(order.alunoNomeCompleto)}</td>
-      <td>${escapeHtml(order.produto)} ${order.observacao ? `<span class="badge">${escapeHtml(order.observacao)}</span>` : ''}</td>
-      <td>${escapeHtml(order.quantidade)}</td>
-      <td>R$ ${Number(order.preco || 0).toFixed(2)}</td>
-      <td>${escapeHtml(order.funcionarioUsername || '-')}</td>
-      <td>${escapeHtml(order.comercio || '-')}</td>
-      <td>${formatDate(order.criadoEm)}</td>
+  tableBody.innerHTML = filteredOrders.map((order, index) => `
+    <tr style="animation: fadeInUp 0.4s ease-out ${index * 0.05}s backwards">
+      <td><i class="fas fa-user-circle" style="color: #ff6600; margin-right: 0.5rem;"></i>${escapeHtml(order.alunoNomeCompleto)}</td>
+      <td>
+        <span class="product-name">${escapeHtml(order.produto)}</span>
+        ${order.observacao ? `<span class="badge-modern"><i class="fas fa-comment"></i> ${escapeHtml(order.observacao)}</span>` : ''}
+       </td>
+      <td><strong>${escapeHtml(order.quantidade)}x</strong></td>
+      <td><span class="price-highlight">R$ ${Number(order.preco || 0).toFixed(2)}</span></td>
+      <td><i class="fas fa-shop"></i> ${escapeHtml(order.comercio || '-')}</td>
+      <td>
+        <span title="${formatFullDate(order.criadoEm)}">
+          <i class="fas fa-clock" style="color: #ffcc00;"></i> ${formatDate(order.criadoEm)}
+        </span>
+       </td>
     </tr>
   `).join('');
 }
@@ -97,6 +620,7 @@ window.addEventListener('load', () => {
     window.location.href = 'account.html';
     return;
   }
+  createParticles();
   renderOrders();
 });
 
