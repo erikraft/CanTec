@@ -25,11 +25,12 @@
             stroke-linecap="round"/>
    `;
 
-   const badge = document.createElement('div');
-   badge.className = 'site-cursor-badge';
-   badge.textContent = cursor.dataset.label || 'Você';
+   // Badge "Você" removido/desabilitado
+   // const badge = document.createElement('div');
+   // badge.className = 'site-cursor-badge';
+   // badge.textContent = cursor.dataset.label || 'Você';
 
-   cursor.append(arrow, badge);
+   cursor.append(arrow/*, badge*/);
    document.body.appendChild(cursor);
    root.classList.add('cursor-enhanced');
 
