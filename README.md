@@ -102,15 +102,16 @@ Utiliza a fonte **Unbounded** do Google Fonts com pesos 400, 700 e 900 para um v
 
 ## 📋 Pré-requisitos
 
-Nenhum! A aplicação funciona 100% no navegador sem necessidade de servidor ou instalação.
+Para uso básico, basta um navegador moderno. Para instalar como **PWA**, execute o site em `http://localhost` ou em hospedagem `https://`, porque a instalação não funciona via `file://`.
 
 ## 🚀 Como Executar
 
-1. Abra o arquivo `html/index.html` no seu navegador
-2. Clique em "Entrar ou Criar Conta"
-3. Crie uma conta ou faça login
-4. Preencha as informações de pedido
-5. Clique em "Salvar Dados"
+1. Sirva a pasta `website/` com um servidor local simples
+2. Abra `http://localhost/.../index.html` no navegador
+3. Clique em "Entrar ou Criar Conta"
+4. Crie uma conta ou faça login
+5. Preencha as informações de pedido
+6. Clique em "Salvar Dados"
 
 ## 📝 Notas de Desenvolvimento
 
